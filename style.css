@@ -69,10 +69,11 @@ nav a:hover{
 
 .banner{
 
-    height:90vh;
+   height:90vh;
     display:flex;
     align-items:center;
     padding:0 10%;
+    position:relative;
 
 }
 
@@ -84,18 +85,23 @@ nav a:hover{
 
 .banner h1{
 
-    font-family:'Playfair Display', serif;
+        font-family:'Playfair Display', serif;
     font-size:60px;
-    color:#5A3A2D;
+    color:#2b1b16;
     margin-bottom:20px;
+    position:relative;
+    z-index:2;
 
 }
 
 
 .banner p{
 
-    font-size:22px;
+   font-size:22px;
     margin-bottom:30px;
+    color:#333;
+    position:relative;
+    z-index:2;
 
 }
 
@@ -348,3 +354,7 @@ h2{
 
 
 }
+.texto{
+    max-width:600px;
+    position:relative;
+    z-index:2;
