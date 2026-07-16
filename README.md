@@ -1,1 +1,0 @@
-# Aniele-Scarpi-Lash-Designer
