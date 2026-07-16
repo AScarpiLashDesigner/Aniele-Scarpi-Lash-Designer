@@ -1,133 +1,18 @@
-<img src="imagens/logo oficial.png" alt="Logo Aniele Scarpi" class="logo"><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Aniele Scarpi | Lash Designer</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 
-<style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
-
-body{
-font-family:Poppins,sans-serif;
-background:#faf9f7;
-color:#333;
-}
-
-header{
-background:#000;
-color:white;
-padding:70px 20px;
-text-align:center;
-}
-
-header h1{
-font-family:'Playfair Display',serif;
-font-size:48px;
-letter-spacing:2px;
-}
-
-header p{
-margin-top:15px;
-font-size:18px;
-color:#d4af37;
-}
-
-.botao{
-display:inline-block;
-margin-top:30px;
-padding:15px 35px;
-background:#d4af37;
-color:white;
-text-decoration:none;
-border-radius:30px;
-font-weight:bold;
-transition:.3s;
-}
-
-.botao:hover{
-background:#b8942c;
-}
-
-section{
-padding:70px 10%;
-}
-
-h2{
-text-align:center;
-margin-bottom:40px;
-font-family:'Playfair Display',serif;
-font-size:36px;
-color:#222;
-}
-
-.cards{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:25px;
-}
-
-.card{
-background:white;
-padding:30px;
-border-radius:15px;
-box-shadow:0 10px 25px rgba(0,0,0,.08);
-text-align:center;
-}
-
-.card h3{
-margin-bottom:15px;
-}
-
-.preco{
-font-size:26px;
-color:#d4af37;
-font-weight:bold;
-margin-top:15px;
-}
-
-.galeria{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:20px;
-}
-
-.galeria img{
-width:100%;
-border-radius:15px;
-height:320px;
-object-fit:cover;
-}
-
-.sobre{
-max-width:900px;
-margin:auto;
-text-align:center;
-line-height:1.8;
-font-size:18px;
-}
-
-footer{
-background:#000;
-color:white;
-text-align:center;
-padding:40px;
-}
-
-footer a{
-color:#d4af37;
-text-decoration:none;
-}
-
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 
 </head>
 
@@ -135,111 +20,151 @@ text-decoration:none;
 
 <header>
 
-<h1>Aniele Scarpi</h1>
+<img src="imagens/logo.png" class="logo">
 
-<p>Lash Designer</p>
+<nav>
 
-<a class="botao" href="https://wa.me/55SEUNUMERO">
-Agende pelo WhatsApp
-</a>
+<a href="#inicio">Início</a>
+
+<a href="#servicos">Serviços</a>
+
+<a href="#sobre">Sobre</a>
+
+<a href="#galeria">Galeria</a>
+
+<a href="#contato">Contato</a>
+
+</nav>
 
 </header>
 
-<section>
+<section class="banner">
 
-<h2>Sobre Mim</h2>
+<div class="texto">
 
-<div class="sobre">
+<h1>Realçando a beleza do seu olhar.</h1>
 
 <p>
-Realço a beleza do seu olhar com técnicas modernas de extensão de cílios,
-priorizando conforto, naturalidade e acabamento impecável.
-Cada atendimento é realizado com dedicação para proporcionar uma experiência única.
+Extensão de cílios com acabamento impecável,
+conforto e elegância.
 </p>
+
+<a href="https://wa.me/55SEUNUMERO" class="botao">
+
+Agendar pelo WhatsApp
+
+</a>
 
 </div>
 
 </section>
 
-<section>
+<section id="servicos">
 
 <h2>Serviços</h2>
 
 <div class="cards">
 
 <div class="card">
+
+<img src="imagens/fioafio.jpg">
+
 <h3>Fio a Fio</h3>
-<p>Efeito natural.</p>
-<div class="preco">R$80</div>
+
+<p>Naturalidade.</p>
+
+<h4>R$80</h4>
+
 </div>
 
 <div class="card">
+
+<img src="imagens/brasileiro.jpg">
+
 <h3>Volume Brasileiro</h3>
-<p>Mais volume e leveza.</p>
-<div class="preco">R$100</div>
+
+<p>Mais volume.</p>
+
+<h4>R$100</h4>
+
 </div>
 
 <div class="card">
+
+<img src="imagens/egipcio.jpg">
+
 <h3>Volume Egípcio</h3>
+
 <p>Olhar marcante.</p>
-<div class="preco">R$120</div>
+
+<h4>R$120</h4>
+
 </div>
 
 <div class="card">
+
+<img src="imagens/luxo.jpg">
+
 <h3>Volume Luxo</h3>
+
 <p>Máximo destaque.</p>
-<div class="preco">R$140</div>
+
+<h4>R$140</h4>
+
 </div>
 
 </div>
 
 </section>
 
-<section>
+<section id="sobre">
+
+<h2>Sobre Mim</h2>
+
+<p>
+
+Sou Lash Designer apaixonada por realçar a beleza natural
+de cada cliente, oferecendo atendimento personalizado e
+um ambiente acolhedor.
+
+</p>
+
+</section>
+
+<section id="galeria">
 
 <h2>Galeria</h2>
 
 <div class="galeria">
 
-<img src="https://picsum.photos/500/600?1">
+<img src="imagens/fioafio.jpg">
 
-<img src="https://picsum.photos/500/600?2">
+<img src="imagens/brasileiro.jpg">
 
-<img src="https://picsum.photos/500/600?3">
+<img src="imagens/egipcio.jpg">
 
-<img src="https://picsum.photos/500/600?4">
+<img src="imagens/luxo.jpg">
 
 </div>
 
 </section>
 
-<section>
+<footer id="contato">
 
-<h2>Contato</h2>
+<p>Toledo - MG</p>
 
-<div class="sobre">
+<p>@ascarpi_lashdesigner</p>
 
-<p><strong>📍 Toledo - MG</strong></p>
+<a href="https://wa.me/55SEUNUMERO">
 
-<p>Instagram: @ascarpi_lashdesigner</p>
+Agendar
 
-<br>
-
-<a class="botao" href="https://wa.me/55SEUNUMERO">
-Agendar Agora
 </a>
-
-</div>
-
-</section>
-
-<footer>
-
-<p>
-© 2026 - Aniele Scarpi Lash Designer
-</p>
 
 </footer>
 
+<script src="script.js"></script>
+
 </body>
+
 </html>
