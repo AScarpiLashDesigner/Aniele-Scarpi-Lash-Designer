@@ -101,13 +101,23 @@ nav a:hover{
 
     min-height:100vh;
 
+    background-image:
+    linear-gradient(rgba(0,0,0,.45), rgba(0,0,0,.45)),
+    url("imagens/banner.jpg");
+
+    background-size:cover;
+
+    background-position:center;
+
+    background-repeat:no-repeat;
+
     display:flex;
-    justify-content:space-between;
+
+    justify-content:center;
+
     align-items:center;
 
-    padding:150px 10% 80px;
-
-    gap:80px;
+}
 
 }
 
@@ -1073,5 +1083,20 @@ body{
     background-size:cover;
 
     background-position:center;
+
+}
+.overlay{
+
+    width:100%;
+
+    max-width:1200px;
+
+    padding:0 10%;
+
+}
+
+.texto-banner{
+
+    max-width:650px;
 
 }
