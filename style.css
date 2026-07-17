@@ -1043,3 +1043,20 @@ section{
     background:#A88430;
 
 }
+body{
+
+    font-family:'Poppins',sans-serif;
+
+    background-image:url("imagens/fundo.jpg");
+
+    background-size:cover;
+
+    background-position:center;
+
+    background-repeat:no-repeat;
+
+    background-attachment:fixed;
+
+    color:var(--preto);
+
+}
