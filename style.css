@@ -92,9 +92,13 @@ nav{
 nav a{
 
     text-decoration:none;
-    color:var(--marrom);
-    font-weight:500;
-    transition:.3s;
+
+    color:#5A3A2D;
+
+    margin-left:25px;
+
+    font-weight:bold;
+
 
 }
 
