@@ -58,12 +58,13 @@ header{
 
 }
 
-.logo{
+.logo img{
 
-    font-size:20px;
-    font-family:'Playfair Display',serif;
-    font-weight:700;
-    color:var(--marrom);
+    width:130px;
+    height:auto;
+    display:block;
+
+}
 
 }
 
