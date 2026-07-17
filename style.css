@@ -1060,3 +1060,230 @@ section{
     background:#A88430;
 
 }
+
+/* =========================================
+   AJUSTES PARA CELULAR
+========================================= */
+
+
+@media (max-width: 768px){
+
+
+/* MENU */
+
+header{
+
+    padding:15px 5%;
+
+}
+
+
+.logo img{
+
+    width:100px;
+
+}
+
+
+nav{
+
+    gap:15px;
+
+}
+
+
+nav a{
+
+    font-size:12px;
+
+}
+
+
+
+/* BANNER INICIAL */
+
+
+.banner{
+
+    min-height:90vh;
+
+    padding:120px 7% 60px;
+
+    text-align:center;
+
+    background-position:center;
+
+}
+
+
+
+.texto{
+
+    max-width:100%;
+
+}
+
+
+.subtitulo{
+
+    font-size:12px;
+
+    letter-spacing:2px;
+
+}
+
+
+
+.banner h1{
+
+    font-size:38px;
+
+    line-height:1.2;
+
+}
+
+
+
+.banner p{
+
+    font-size:16px;
+
+    line-height:1.6;
+
+}
+
+
+
+/* BOTÃO */
+
+
+.botao{
+
+    display:inline-block;
+
+    padding:15px 28px;
+
+    font-size:15px;
+
+}
+
+
+
+/* SEÇÕES */
+
+
+section{
+
+    padding:60px 7%;
+
+}
+
+
+
+h2{
+
+    font-size:32px;
+
+}
+
+
+
+/* DIFERENCIAIS */
+
+
+.beneficios{
+
+    grid-template-columns:1fr;
+
+}
+
+
+.beneficio{
+
+    padding:25px;
+
+}
+
+
+
+/* SERVIÇOS */
+
+
+.cards{
+
+    grid-template-columns:1fr;
+
+}
+
+
+
+.card img{
+
+    height:250px;
+
+}
+
+
+
+/* SOBRE */
+
+
+.sobre-container{
+
+    grid-template-columns:1fr;
+
+}
+
+
+.texto-sobre{
+
+    text-align:center;
+
+}
+
+
+
+.texto-sobre h2{
+
+    text-align:center;
+
+}
+
+
+
+/* GALERIA */
+
+
+.galeria{
+
+    grid-template-columns:1fr 1fr;
+
+    gap:15px;
+
+}
+
+
+.galeria img{
+
+    height:220px;
+
+}
+
+
+
+/* RODAPÉ */
+
+
+footer{
+
+    padding:50px 7%;
+
+}
+
+
+
+}
+
+
+
+
