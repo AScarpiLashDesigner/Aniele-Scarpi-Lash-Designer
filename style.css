@@ -52,7 +52,7 @@ body{
 
 header{
 
-    background:rgba(255,255,255,0.90);
+    background:white;
 
     display:flex;
 
@@ -60,9 +60,9 @@ header{
 
     align-items:center;
 
-    padding:20px 10%;
+    padding:15px 10%;
 
-    box-shadow:0 2px 15px rgba(0,0,0,.08);
+    box-shadow:0 3px 15px rgba(0,0,0,.08);
 
     position:sticky;
 
@@ -72,22 +72,28 @@ header{
 
 }
 
+}
+
 .logo img{
 
     width:130px;
-    height:auto;
-    display:block;
 
-}
+    height:auto;
+
+    display:block;
 
 }
 
 nav{
 
     display:flex;
-    gap:35px;
+
+    align-items:center;
+
+    gap:30px;
 
 }
+
 
 nav a{
 
@@ -95,18 +101,22 @@ nav a{
 
     color:#5A3A2D;
 
-    margin-left:25px;
+    font-weight:600;
 
-    font-weight:bold;
+    font-size:15px;
 
+    transition:.3s;
 
 }
+
 
 nav a:hover{
 
-    color:var(--dourado);
+    color:#C7A34B;
 
 }
+
+
 
 /*================ BANNER ================*/
 
