@@ -1281,9 +1281,25 @@ footer{
 }
 
 
+   
+/* Legendas da galeria */
 
+.item-galeria {
+    text-align: center;
 }
 
+.item-galeria img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
 
-
-
+.item-galeria p {
+    margin-top: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--marrom);
+    letter-spacing: 0.5px;
+}
