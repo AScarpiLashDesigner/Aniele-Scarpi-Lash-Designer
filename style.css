@@ -548,7 +548,15 @@ section#servicos .frase-servicos {
     margin-bottom:10px;
 }
 
-
+section#servicos .frase-servicos {
+    font-family: 'Allura', cursive !important;
+    font-size: 38px !important;
+    font-weight: 400 !important;
+    color: var(--marrom) !important;
+    text-align: center;
+    line-height: 1.4;
+    margin: -35px auto 45px;
+}
 /*==================================================
    GALERIA
 ==================================================*/
