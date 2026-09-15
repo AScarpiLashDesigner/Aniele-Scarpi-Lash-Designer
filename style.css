@@ -278,16 +278,6 @@ h2::after{
     background:var(--marrom);
     margin:18px auto 0;
 }
-
-.titulo-servicos{
-    font-family:'Cormorant Garamond', serif;
-    font-size:38px;
-    font-weight:500;
-    color:#333;
-    line-height:1.2;
-    margin:22px 0 10px;
-}
-
 .titulo-servicos::after{
     display:none;
 }
