@@ -357,6 +357,57 @@ h2::after{
     transform:translateY(-5px);
 }
 
+.diferenciais-container {
+    display: grid;
+    grid-template-columns: 1fr 0.85fr;
+    gap: 55px;
+    align-items: center;
+}
+
+.beneficios {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.beneficio {
+    background: rgba(255, 255, 255, 0.94);
+    padding: 25px 30px;
+    border-radius: 22px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+}
+
+.beneficio i {
+    font-size: 28px;
+    color: var(--dourado);
+    margin-bottom: 12px;
+}
+
+.beneficio h3 {
+    color: var(--marrom);
+    font-size: 21px;
+    margin-bottom: 8px;
+}
+
+.beneficio p {
+    color: var(--cinza);
+    line-height: 1.6;
+}
+
+.foto-diferenciais {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.foto-diferenciais img {
+    display: block;
+    width: 100%;
+    max-width: 380px;
+    height: auto;
+    border-radius: 28px;
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
+}
 
 /*==================================================
    SERVIÇOS
@@ -897,8 +948,20 @@ footer i{
         font-size: 27px;
         margin: -25px auto 35px;
     }
-}
+@media (max-width: 768px) {
+    .diferenciais-container {
+        grid-template-columns: 1fr;
+        gap: 35px;
+    }
 
+    .beneficio {
+        padding: 23px;
+    }
+
+    .foto-diferenciais img {
+        max-width: 310px;
+    }
+}
 /*==================================================
    CELULAR PEQUENO
 ==================================================*/
