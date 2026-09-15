@@ -328,16 +328,9 @@ section {
     line-height: 1.5;
 }
 
-
 /* =========================================================
    SOBRE MIM
 ========================================================= */
-
-/*
-   DESKTOP:
-   FOTO = ESQUERDA
-   TEXTO = DIREITA
-*/
 
 .sobre {
     background: transparent;
@@ -345,25 +338,20 @@ section {
 
 #sobre .sobre-container {
     max-width: 1100px;
-    margin: auto;
+    margin: 0 auto;
 
     display: grid;
-
-    /* primeira coluna = foto
-       segunda coluna = texto */
     grid-template-columns: 0.85fr 1.15fr;
 
     gap: 70px;
     align-items: center;
 }
 
-
-/* FOTO */
+/* FOTO — ESQUERDA */
 
 #sobre .sobre-imagem {
     grid-column: 1;
     grid-row: 1;
-    width: 100%;
 }
 
 #sobre .sobre-imagem img {
@@ -371,17 +359,25 @@ section {
     max-width: 430px;
     height: auto;
     margin: 0 auto;
+    display: block;
     border-radius: 14px;
-    object-fit: contain;
 }
 
-
-/* TEXTO */
+/* TEXTO — DIREITA */
 
 #sobre .texto-sobre {
     grid-column: 2;
     grid-row: 1;
     text-align: left;
+}
+
+#sobre .subtitulo {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    color: var(--marrom);
+    margin-bottom: 10px;
 }
 
 #sobre .texto-sobre h2 {
@@ -390,6 +386,7 @@ section {
     font-weight: 600;
     color: var(--preto);
     margin-bottom: 22px;
+    line-height: 1.2;
 }
 
 #sobre .texto-sobre p {
@@ -398,6 +395,43 @@ section {
     color: #555;
     font-weight: 300;
     margin-bottom: 18px;
+}
+
+
+/* =========================================================
+   SOBRE MIM — CELULAR
+========================================================= */
+
+@media (max-width: 768px) {
+
+    #sobre .sobre-container {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    #sobre .sobre-imagem {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    #sobre .texto-sobre {
+        grid-column: 1;
+        grid-row: 2;
+        text-align: center;
+    }
+
+    #sobre .sobre-imagem img {
+        max-width: 320px;
+    }
+
+    #sobre .texto-sobre h2 {
+        font-size: 32px;
+    }
+
+    #sobre .texto-sobre p {
+        font-size: 14px;
+        line-height: 1.8;
+    }
 }
 
 
