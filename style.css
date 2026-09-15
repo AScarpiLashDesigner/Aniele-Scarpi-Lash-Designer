@@ -413,10 +413,10 @@ h2::after{
    SERVIÇOS
 ==================================================*/
 
-.cards{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-    gap:35px;
+.cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
 }
 
 .card{
@@ -483,6 +483,18 @@ section#servicos .frase-servicos {
     line-height: 1.4;
     margin: -35px auto 45px;
 }
+@media (max-width: 992px) {
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .cards {
+        grid-template-columns: 1fr;
+    }
+}
+
 
 /*==================================================
    SOBRE
