@@ -982,6 +982,11 @@ footer i{
         font-size: 28px !important;
         margin: -25px auto 35px;
     }
+@media (max-width: 768px) {
+    section#servicos .frase-servicos {
+        font-size: 31px !important;
+        margin: -25px auto 35px;
+    }
 }
 /*==================================================
    CELULAR PEQUENO
