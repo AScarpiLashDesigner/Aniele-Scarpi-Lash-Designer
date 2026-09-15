@@ -340,13 +340,16 @@ h2::after{
 .foto-diferenciais{
     display:flex;
     justify-content:center;
+    align-items:center;
 }
 
 .foto-diferenciais img{
     width:100%;
-    max-width:500px;
+    max-width:380px;
+    height:420px;
+    object-fit:cover;
     border-radius:30px;
-    box-shadow:0 25px 55px rgba(0,0,0,.17);
+    box-shadow:0 20px 45px rgba(0,0,0,.15);
     transition:.5s;
 }
 
@@ -874,6 +877,10 @@ footer i{
     }
 }
 
+.foto-diferenciais img{
+    max-width:320px;
+    height:350px;
+}
 
 /*==================================================
    CELULAR PEQUENO
