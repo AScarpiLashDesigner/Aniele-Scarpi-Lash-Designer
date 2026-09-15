@@ -960,8 +960,6 @@ footer i{
         grid-template-columns:repeat(2,1fr);
     }
 }
-
-
 /*==================================================
    CELULAR
 ==================================================*/
@@ -974,6 +972,7 @@ footer i{
 
     .logo img{
         width:100px;
+        height:auto;
     }
 
     nav{
@@ -1056,7 +1055,7 @@ footer i{
         margin:-25px auto 35px;
     }
 
-    /* SOBRE - FOTO EM CIMA + TEXTO EMBAIXO */
+    /* SOBRE */
 
     .sobre-container{
         grid-template-columns:1fr;
@@ -1088,20 +1087,39 @@ footer i{
         flex-direction:column;
     }
 
-    .galeria{
-        grid-template-columns:1fr 1fr;
-        gap:15px;
+    /* GALERIA */
+
+    .galeria-secao{
+        padding:65px 7%;
     }
 
-    .item-galeria img{
-        height:220px;
-        border-radius:18px;
+    .cabecalho-galeria{
+        margin-bottom:30px;
+    }
+
+    .cabecalho-galeria h2{
+        font-size:34px;
+    }
+
+    .frase-galeria{
+        font-size:27px;
+    }
+
+    .galeria{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:26px 16px;
+    }
+
+    .imagem-galeria{
+        border-radius:8px;
     }
 
     .item-galeria p{
-        font-size:13px;
-        margin-top:9px;
+        font-size:11px;
+        margin-top:10px;
     }
+
+    /* CTA */
 
     .cta{
         margin:70px 7%;
@@ -1112,15 +1130,13 @@ footer i{
         font-size:16px;
     }
 
+    /* RODAPÉ */
+
     footer{
         padding:50px 7%;
     }
-   @media(max-width:768px){
+}
 
-    .logo img{
-        width:100px;
-        height:auto;
-    }
 
 /*==================================================
    CELULAR PEQUENO
@@ -1146,6 +1162,11 @@ footer i{
         text-align:center;
     }
 
+    .logo img{
+        width:100px;
+        height:auto;
+    }
+
     .whatsapp{
         width:58px;
         height:58px;
@@ -1158,8 +1179,8 @@ footer i{
         gap:12px;
     }
 
-    .item-galeria img{
-        height:190px;
+    .imagem-galeria{
+        border-radius:8px;
     }
 
     .item-galeria p{
