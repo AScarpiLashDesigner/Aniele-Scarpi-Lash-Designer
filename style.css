@@ -250,6 +250,30 @@ h2::after{
     margin:18px auto 0;
 }
 
+/*================ TÍTULO SERVIÇOS ================*/
+
+.titulo-servicos{
+    font-family:'Cormorant Garamond', serif;
+    font-size:52px;
+    font-weight:500;
+    line-height:1.1;
+    color:var(--marrom);
+    margin-bottom:15px;
+}
+
+.titulo-servicos::after{
+    display:none;
+}
+
+.titulo-secao p{
+    font-family:'Poppins', sans-serif;
+    font-size:15px;
+    font-weight:300;
+    line-height:1.8;
+    color:var(--cinza);
+    max-width:600px;
+    margin:0 auto 50px;
+}
 
 /*================ ANIMAÇÕES ================*/
 
