@@ -387,8 +387,8 @@ h2::after{
 .foto-diferenciais img{
     display:block;
     width:100%;
-    max-width:350px;
-    height:400px;
+    max-width:450px;
+    height:550px;
     object-fit:cover;
     border-radius:28px;
     box-shadow:0 20px 45px rgba(0,0,0,.15);
