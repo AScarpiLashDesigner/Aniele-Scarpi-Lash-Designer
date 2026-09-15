@@ -498,10 +498,13 @@ section#servicos .frase-servicos {
     display: block;
     padding: 0 25px 25px;
     margin-top: -18px;
-    color: #777;
-    font-size: 14px;
-    font-weight: 400;
-    letter-spacing: 0.3px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 19px;
+    font-weight: 500;
+    font-style: italic;
+    color: var(--marrom);
+    letter-spacing: 0.5px;
+}
 }
 
 /*==================================================
