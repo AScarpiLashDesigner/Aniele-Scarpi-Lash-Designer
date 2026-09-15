@@ -299,6 +299,14 @@ h2::after{
     max-width:560px;
     margin:0 auto;
 }
+.titulo-servicos{
+    font-family:'Allura', cursive;
+    font-size:42px;
+    font-weight:400;
+    color:var(--marrom);
+    line-height:1.2;
+    margin:22px 0 10px;
+}
 
 /*================ ANIMAÇÕES ================*/
 
