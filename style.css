@@ -781,19 +781,20 @@ h2::after{
     line-height:1.8;
     font-size:18px;
 }
-
 .cta .botao{
     position:relative;
     z-index:1;
     display:inline-block;
-    background:white;
-    color:var(--marrom);
+    background:var(--dourado) !important;
+    color:white !important;
+    border:none;
 }
 
 .cta .botao:hover{
-    background:var(--dourado);
-    color:white;
+    background:var(--marrom) !important;
+    color:white !important;
 }
+
 
 /*==================================================
    RODAPÉ
