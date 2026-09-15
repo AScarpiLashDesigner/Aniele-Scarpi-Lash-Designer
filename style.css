@@ -414,6 +414,16 @@ h2::after{
     padding:25px;
 }
 
+.frase-servicos {
+    font-family: 'Allura', cursive;
+    font-size: 32px;
+    font-weight: 400;
+    color: var(--marrom);
+    text-align: center;
+    margin: -35px auto 45px;
+    line-height: 1.4;
+}
+
 
 /*==================================================
    SOBRE
@@ -880,6 +890,13 @@ footer i{
 .foto-diferenciais img{
     max-width:320px;
     height:350px;
+}
+
+@media (max-width: 768px) {
+    .frase-servicos {
+        font-size: 27px;
+        margin: -25px auto 35px;
+    }
 }
 
 /*==================================================
