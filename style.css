@@ -474,7 +474,15 @@ h2::after{
     margin: -35px auto 45px;
     line-height: 1.4;
 }
-
+section#servicos .frase-servicos {
+    font-family: 'Allura', cursive !important;
+    font-size: 34px !important;
+    font-weight: 400 !important;
+    color: var(--marrom) !important;
+    text-align: center;
+    line-height: 1.4;
+    margin: -35px auto 45px;
+}
 
 /*==================================================
    SOBRE
@@ -960,6 +968,11 @@ footer i{
 
     .foto-diferenciais img {
         max-width: 310px;
+    }
+@media (max-width: 768px) {
+    section#servicos .frase-servicos {
+        font-size: 28px !important;
+        margin: -25px auto 35px;
     }
 }
 /*==================================================
