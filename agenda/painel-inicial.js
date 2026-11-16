@@ -1,13 +1,13 @@
 (function(){"use strict";
 const panel=document.createElement("section");panel.id="as-home";panel.setAttribute("aria-label","Resumo inteligente do estúdio");
-panel.innerHTML='<div class="head"><div><p class="caption">ANIELE SCARPI · LASH DESIGNER</p><h2>Meu estúdio hoje</h2></div><button type="button" id="as-home-refresh">↻ Atualizar</button></div><div class="grid" id="as-home-grid"></div><p id="as-home-status" role="status">Aguardando login na agenda…</p><div class="actions"><a href="./solicitacoes.html">Ver solicitações</a><button type="button" id="as-home-maint">♡ Ver manutenções</button><button type="button" id="as-home-post">♡ Ver pós-atendimento</button></div>';
+panel.innerHTML='<div class="head"><div><p class="caption">ANIELE SCARPI · LASH DESIGNER</p><h2>Meu estúdio hoje</h2></div><button type="button" id="as-home-refresh">↻ Atualizar</button></div><div class="grid" id="as-home-grid"></div><p id="as-home-status" role="status">Aguardando login na agenda…</p><div class="actions"><button type="button" id="as-home-new-client">＋ Nova cliente</button><button type="button" id="as-home-new-appointment">＋ Novo atendimento</button><button type="button" id="as-home-slots">◷ Horários livres</button><a href="./solicitacoes.html">Solicitações online</a></div>';
 const grid=panel.querySelector("#as-home-grid"),status=panel.querySelector("#as-home-status");let lastLoad=0,busy=false;
 const cards=[["Atendimentos de hoje","Agendados para hoje"],["Próximas manutenções","Vencidas ou até 7 dias"],["Clientes aguardando contato","Realizados há 1–30 dias"],["Solicitações pendentes","Aguardando aprovação"]];
 function show(values){grid.replaceChildren();cards.forEach(([title,note],i)=>{const c=document.createElement("div");c.className="tile";const label=document.createElement("span");label.textContent=title;const number=document.createElement("strong");number.textContent=values?.[i]??"—";const sub=document.createElement("small");sub.textContent=note;c.append(label,number,sub);grid.append(c)})}
 function date(s){const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(String(s||""));return m?new Date(+m[1],+m[2]-1,+m[3],12):null}
 function dayKey(d){return [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-")}
 function difference(a,b){return Math.round((a-b)/86400000)}
-function install(){const content=document.querySelector(".content");if(!content)return;if(panel.parentElement!==content)content.prepend(panel);if(Date.now()-lastLoad>60000&&!busy)load()}
+function install(){const content=document.querySelector(".content");if(!content)return;const nav=document.querySelector("nav button.nav-active");const isAgenda=nav?.textContent?.trim()==="Agenda semanal";content.classList.toggle("as-home-clean",!!isAgenda);if(!isAgenda){if(panel.isConnected)panel.remove();return}const title=content.querySelector(".title-row");if(!title)return;if(panel.parentElement!==content||panel.previousElementSibling!==title)title.insertAdjacentElement("afterend",panel);if(Date.now()-lastLoad>60000&&!busy)load()}
 async function load(){if(busy||!panel.isConnected)return;busy=true;lastLoad=Date.now();status.textContent="Atualizando dados reais do estúdio…";try{
 const session=JSON.parse(sessionStorage.getItem("as-agenda-session-v1")||"null");if(!session?.access_token||!session?.user?.id){show(null);status.textContent="Entre na sua conta para visualizar os indicadores.";return}
 const cfg=window.AS_AGENDA_CONFIG;if(!cfg?.url||!cfg?.key)throw Error("Configuração da agenda indisponível.");
@@ -36,8 +36,9 @@ const pending=apps.filter(a=>a.status==="Realizado"&&date(a.date)&&difference(to
 show([todayApps,due,pending,requests.length]);status.textContent="Atualizado às "+new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})+" · Informações privadas do Supabase.";lastLoad=Date.now();
 }catch(e){show(null);status.textContent=e.message||"Erro ao carregar indicadores."}finally{busy=false}}
 panel.querySelector("#as-home-refresh").onclick=()=>{lastLoad=0;load()};
-panel.querySelector("#as-home-maint").onclick=()=>{if(typeof window.AS_openManutencoes==="function")window.AS_openManutencoes()};
-panel.querySelector("#as-home-post").onclick=()=>{if(typeof window.AS_openPosAtendimento==="function")window.AS_openPosAtendimento()};
+panel.querySelector("#as-home-new-client").onclick=()=>{location.href="./clientes.html"};
+panel.querySelector("#as-home-new-appointment").onclick=()=>{document.querySelector(".content .title-row button.primary")?.click()};
+panel.querySelector("#as-home-slots").onclick=()=>{document.querySelector(".content .instagram-card button")?.click()};
 show(null);new MutationObserver(install).observe(document.getElementById("root"),{childList:true,subtree:true});install();
 document.addEventListener("visibilitychange",()=>{if(!document.hidden&&Date.now()-lastLoad>60000)load()});
 })();
