@@ -1,0 +1,20 @@
+/* Perguntas frequentes — Aniele Scarpi */
+#duvidas.as-faq{background:#faf6f4;padding:85px max(22px,calc((100% - 1080px)/2));color:#5a3a2d;scroll-margin-top:100px}
+.as-faq-intro{text-align:center;max-width:690px;margin:0 auto 35px}
+.as-faq-rotulo{font:600 12px Poppins,sans-serif;letter-spacing:.19em;color:#9a756b}
+.as-faq-intro h2{font-family:'Playfair Display',Georgia,serif;font-size:clamp(29px,4vw,42px);line-height:1.25;margin:12px 0 16px;color:#5a3a2d}
+.as-faq-intro p{font:400 15px/1.8 Poppins,sans-serif;color:#75665f}
+.as-faq-lista{display:grid;gap:12px;max-width:860px;margin:auto}
+.as-faq-lista details{background:#fff;border:1px solid #eadbd6;border-radius:16px;overflow:hidden;box-shadow:0 6px 20px rgba(75,47,38,.035)}
+.as-faq-lista summary{cursor:pointer;list-style:none;padding:20px 52px 20px 22px;font:600 15px/1.5 Poppins,sans-serif;position:relative;color:#5a3a2d}
+.as-faq-lista summary::-webkit-details-marker{display:none}
+.as-faq-lista summary::after{content:'+';position:absolute;right:22px;top:50%;transform:translateY(-50%);font-size:25px;font-weight:300;color:#9a756b}
+.as-faq-lista details[open] summary::after{content:'−'}
+.as-faq-lista details[open] summary{border-bottom:1px solid #f1e8e4}
+.as-faq-lista details p{padding:16px 22px 22px;margin:0;font:400 14px/1.85 Poppins,sans-serif;color:#685a54}
+.as-faq-lista summary:focus-visible,.as-faq-rodape a:focus-visible{outline:3px solid #ad8c83;outline-offset:3px}
+.as-faq-rodape{text-align:center;margin:32px auto 0}
+.as-faq-rodape p{font:400 14px/1.7 Poppins,sans-serif;color:#75665f;margin:0 0 16px}
+.as-faq-rodape a{display:inline-block;background:#68483d;color:#fff;text-decoration:none;border-radius:40px;padding:13px 26px;font:600 14px Poppins,sans-serif}
+.as-faq-rodape a:hover{background:#4e342b}
+@media(max-width:600px){#duvidas.as-faq{padding:60px 20px}.as-faq-lista summary{padding:17px 47px 17px 17px;font-size:14px}.as-faq-lista details p{padding:15px 17px 19px}}
