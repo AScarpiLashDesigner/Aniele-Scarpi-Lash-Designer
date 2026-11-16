@@ -34,7 +34,7 @@ Preencha a conexão na tela inicial da agenda. Ela fica registrada apenas no nav
 
 ## 4. Uso diário
 
-Cadastre clientes, atendimentos e disponibilidade. Marque como Realizado após o procedimento para gerar a manutenção. O prazo padrão é 21 dias, respeitando o prazo específico de cada cliente, o retorno específico do atendimento e as datas manuais.
+Cadastre clientes, atendimentos e disponibilidade. Marque como Concluído após o procedimento para gerar a manutenção. Ao salvar, a tela destaca a próxima data e o botão Agendar manutenção. A cliente e a data ficam preenchidas; escolha o horário e salve para criar o retorno. A previsão também fica visível no registro concluído. Quando o retorno criado por esse botão já existe, use Ver manutenção para consultá-lo. O prazo padrão é 21 dias, respeitando o prazo específico de cada cliente, o retorno específico do atendimento e as datas manuais.
 
 Os botões de WhatsApp abrem mensagens preenchidas; você revisa e envia. A área Lembretes para amanhã usa a data de Brasília. A versão GitHub não herda automaticamente as notificações do ChatGPT: os lembretes aparecem quando você abre a agenda. Alertas com o site fechado exigem configurar uma automação separada apontada para este banco. As tarefas antigas continuam consultando apenas a agenda antiga até serem adaptadas.
 

@@ -1,5 +1,5 @@
 export type Client={id:string;name:string;phone:string;days:number;notes:string};
-export type Appointment={id:string;clientId:string;date:string;time:string;duration:number;technique:string;notes:string;days:number;maintenance:string;pending:boolean;status:string};
+export type Appointment={id:string;clientId:string;date:string;time:string;duration:number;technique:string;notes:string;days:number;maintenance:string;pending:boolean;status:string;maintenanceOf?:string};
 export type Window={id:string;date:string;start:string;end:string};
 export type State={clients:Client[];appointments:Appointment[];windows:Window[];logo:string;slot:number};
 export const empty:State={clients:[],appointments:[],windows:[],logo:'',slot:120};
@@ -22,3 +22,6 @@ export function weekly(s:State,start:string,client=''){
  const now=new Intl.DateTimeFormat('en-GB',{timeZone:'America/Sao_Paulo',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date());
  return {start,end,appointments,maintenance,slots:slots.filter(x=>x.date>today()||(x.date===today()&&x.start>now))};
 }
+
+export function maintenanceFollowup(a:Appointment,s:State){return s.appointments.filter(b=>b.maintenanceOf===a.id&&['Agendado','Confirmado','Realizado'].includes(b.status)).sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time))[0]}
+export function maintenanceDraft(a:Appointment,s:State){return {clientId:a.clientId,date:due(a,s),technique:'Manutenção',duration:s.slot,pending:true,days:0,maintenance:'',notes:'',status:'Agendado',maintenanceOf:a.id}}
