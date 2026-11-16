@@ -99,3 +99,12 @@ h2::after{background:#B9948A}
   #diferenciais .beneficio p{font-size:15px;line-height:1.55}
   #sobre.sobre{padding-top:32px}
 }
+
+/* Sobre mim mobile: leitura confortável e passagem compacta à próxima seção. */
+@media(max-width:600px){
+  #sobre.sobre{padding-bottom:28px}
+  #sobre .texto-sobre p{font-size:15px;line-height:1.75;max-width:42ch;margin:0 auto 16px}
+  #sobre .texto-sobre p:last-child{margin-bottom:0}
+  #primeiro-atendimento.primeira-visita{padding-top:42px}
+  body.as-sobre-visivel .whatsapp{display:none}
+}
