@@ -73,3 +73,9 @@ h2::after{background:#B9948A}
   #servicos .titulo-secao p{font-size:13px;line-height:1.65;max-width:34ch}
   .whatsapp{width:44px;height:44px;font-size:23px;right:7px;bottom:78px}
 }
+
+/* Ajuste final: evitar quebra isolada no texto e não cobrir botões dos serviços. */
+@media(max-width:600px){
+  #servicos .titulo-secao p{max-width:42ch;text-wrap:balance;margin-left:auto;margin-right:auto}
+  body.as-servicos-visiveis .whatsapp{display:none}
+}
