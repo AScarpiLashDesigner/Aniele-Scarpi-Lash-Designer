@@ -1,17 +1,19 @@
-
-/* Serviços interativos — identidade preservada */
-#servicos .card-conteudo{display:flex;flex-direction:column;height:calc(100% - 240px)}
-#servicos .card-conteudo>.manutencao{margin-bottom:0}
-#servicos .as-servico-acoes{padding:0 22px 25px;margin-top:auto;display:grid;gap:10px}
+/* Cards de serviços compactos — identidade editorial aprovada */
+#servicos .cards{align-items:stretch}
+#servicos .card{display:flex;flex-direction:column;height:100%}
+#servicos .card img{flex:none}
+#servicos .card-conteudo{display:flex;flex-direction:column;flex:1;height:auto;min-height:0;padding:21px 20px 23px;text-align:center}
+#servicos .card h3{padding:0;margin:0 0 13px;font-size:clamp(20px,2vw,25px);line-height:1.3}
+#servicos .card-conteudo>.preco{display:block;padding:0;margin:0;color:#68483D;font-size:27px;line-height:1.3;font-weight:600}
+#servicos .card-conteudo>.manutencao{display:block;padding:0;margin:7px 0 0;font-size:17px;line-height:1.35;color:#80665e;letter-spacing:0}
+#servicos .as-servico-acoes{display:grid;gap:10px;margin-top:auto;padding:23px 0 0}
 #servicos .as-servico-detalhes{border:1px solid #b9958b;background:#fff;color:#5a3a2d;border-radius:30px;padding:12px 14px;font:500 14px Poppins,sans-serif;cursor:pointer;min-height:45px}
 #servicos .as-servico-detalhes:hover{background:#faf1ed}
 #servicos .as-servico-agendar{display:block;text-align:center;text-decoration:none;border-radius:30px;background:#68483d;color:white;padding:13px 12px;font:600 14px Poppins,sans-serif;min-height:46px}
 #servicos .as-servico-agendar:hover{background:#4e342b}
-#servicos .as-servico-painel{background:#faf6f3;border-radius:12px;padding:15px}
+#servicos .as-servico-painel{background:#faf6f3;border-radius:12px;padding:15px;text-align:left}
 #servicos .as-servico-painel[hidden]{display:none}
-#servicos .as-servico-painel p{padding:0;min-height:0;font-size:13px;line-height:1.65}
+#servicos .as-servico-painel p{padding:0;margin:0;min-height:0;font-size:13px;line-height:1.65}
 #servicos .as-servico-painel .as-servico-nota{margin-top:9px;font-size:12px;color:#80665e}
-#servicos .card{display:flex;flex-direction:column}
-#servicos .card-conteudo{flex:1}
 #servicos .as-servico-detalhes:focus-visible,#servicos .as-servico-agendar:focus-visible{outline:3px solid #b9958b;outline-offset:3px}
-@media(max-width:768px){#servicos .card-conteudo{height:auto}#servicos .as-servico-acoes{padding:0 20px 23px}}
+@media(max-width:768px){#servicos .card-conteudo{height:auto;padding:20px}#servicos .as-servico-acoes{padding-top:20px}}
