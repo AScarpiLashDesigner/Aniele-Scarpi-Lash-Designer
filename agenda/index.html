@@ -8,4 +8,33 @@ if(button.textContent.trim()!=="Nova cliente")return;
 event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();
 window.location.href="./clientes.html";
 },true);
-</script><noscript>Ative o JavaScript para abrir a agenda.</noscript><script src="./config.js"></script><script type="module" src="./app.js?v=20261115-clientes2"></script></body></html>
+</script><style>
+#as-ficha-backdrop{position:fixed;inset:0;background:#25191bcc;z-index:9998;display:none;align-items:center;justify-content:center;padding:14px}
+#as-ficha-backdrop.visible{display:flex}#as-ficha-dialog{background:#fffaf9;color:#3f3032;border-radius:16px;max-width:610px;width:100%;max-height:90vh;overflow:auto;padding:25px;box-shadow:0 12px 40px #0004}
+#as-ficha-dialog h2{margin:0 0 15px;font-family:Georgia,serif}#as-ficha-dialog p{margin:9px 0;line-height:1.55;overflow-wrap:anywhere}#as-ficha-dialog button,#as-ficha-dialog a.as-link{display:inline-block;padding:11px 14px;border-radius:8px;background:#67483e;color:white;text-decoration:none;margin:10px 8px 0 0}
+</style><div id="as-ficha-backdrop"><section id="as-ficha-dialog" role="dialog" aria-modal="true" aria-label="Ficha da cliente"><button id="as-ficha-close" type="button">Fechar</button><h2>Ficha da cliente</h2><div id="as-ficha-content"></div><div id="as-ficha-actions"></div></section></div>
+<script type="module">
+import {createClient} from "https://esm.sh/@supabase/supabase-js@2.57.0";
+const cfg=window.AS_AGENDA_CONFIG;
+const db=createClient(cfg.url,cfg.key,{auth:{persistSession:true,autoRefreshToken:true,storageKey:"as-agenda-auth-token"}});
+const backdrop=document.getElementById("as-ficha-backdrop"),content=document.getElementById("as-ficha-content"),actions=document.getElementById("as-ficha-actions");
+function add(label,value){const p=document.createElement("p"),b=document.createElement("strong");b.textContent=label+": ";p.append(b,document.createTextNode(value==null||value===""?"Não informado":String(value)));content.append(p)}
+function close(){backdrop.classList.remove("visible")}
+document.getElementById("as-ficha-close").onclick=close;backdrop.addEventListener("click",e=>{if(e.target===backdrop)close()});
+const labels={ja_fez_extensao:"Já fez extensão",ultimo_procedimento:"Último procedimento",reacao_anterior:"Reação anterior",alergia_conhecida:"Alergia conhecida",qual_alergia:"Qual alergia",lentes_contato:"Lentes de contato",tratamento_medico:"Tratamento médico",medicamento_continuo:"Medicamento contínuo",qual_medicamento:"Qual medicamento",gestante_amamentando:"Grávida ou amamentando",condicao_ocular:"Condição ocular",qual_condicao:"Qual condição",irritacao_ocular:"Irritação ocular",cirurgia_ocular:"Cirurgia ocular recente",observacoes_saude:"Observações de saúde",informacoes_verdadeiras:"Declaração de veracidade",ciente_riscos:"Ciência dos riscos",autoriza_procedimento:"Autorização do procedimento",autoriza_imagens:"Autorização de imagens",observacoes_adicionais:"Observações adicionais"};
+window.AS_openFicha=async function(client){
+content.replaceChildren();actions.replaceChildren();backdrop.classList.add("visible");add("Nome",client.name);add("WhatsApp",client.phone);add("Prazo de manutenção",client.days+" dias");add("Observações da agenda",client.notes);add("Anamnese","Carregando...");
+try{
+const {data:{user}}=await db.auth.getUser();if(!user)throw Error("Entre na agenda novamente.");
+const digits=v=>String(v||"").replace(/\D/g,"");
+const {data,error}=await db.from("clientes_studio").select("id,nome,whatsapp,nascimento,instagram,tecnica_desejada,observacoes_internas,anamnese,anamnese_at").eq("owner_id",user.id);
+if(error)throw error;
+const row=(data||[]).find(r=>r.id===client.id||(digits(r.whatsapp).length>=10&&digits(r.whatsapp)===digits(client.phone)));
+content.lastChild.remove();
+if(!row){add("Anamnese","Ainda não cadastrada na ficha digital.");const a=document.createElement("a");a.className="as-link";a.href="./clientes.html";a.textContent="Completar cadastro e anamnese";actions.append(a);return}
+add("Nascimento",row.nascimento);add("Instagram",row.instagram);add("Técnica desejada",row.tecnica_desejada);add("Observações internas",row.observacoes_internas);add("Anamnese",row.anamnese_at?"Preenchida":"Pendente");
+if(row.anamnese)for(const [k,v] of Object.entries(row.anamnese))add(labels[k]||k,v);
+const a=document.createElement("a");a.className="as-link";a.href="./clientes.html?cliente="+encodeURIComponent(row.id);a.textContent="Editar ficha e enviar WhatsApp";actions.append(a);
+}catch(err){add("Erro ao consultar",err.message||"Tente novamente")}
+};
+</script><noscript>Ative o JavaScript para abrir a agenda.</noscript><script src="./config.js"></script><script type="module" src="./app.js?v=20261116-ficha1"></script></body></html>
