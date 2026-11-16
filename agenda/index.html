@@ -22,6 +22,21 @@ function add(label,value){const p=document.createElement("p"),b=document.createE
 function close(){backdrop.classList.remove("visible")}
 document.getElementById("as-ficha-close").onclick=close;backdrop.addEventListener("click",e=>{if(e.target===backdrop)close()});
 const labels={ja_fez_extensao:"Já fez extensão",ultimo_procedimento:"Último procedimento",reacao_anterior:"Reação anterior",alergia_conhecida:"Alergia conhecida",qual_alergia:"Qual alergia",lentes_contato:"Lentes de contato",tratamento_medico:"Tratamento médico",medicamento_continuo:"Medicamento contínuo",qual_medicamento:"Qual medicamento",gestante_amamentando:"Grávida ou amamentando",condicao_ocular:"Condição ocular",qual_condicao:"Qual condição",irritacao_ocular:"Irritação ocular",cirurgia_ocular:"Cirurgia ocular recente",observacoes_saude:"Observações de saúde",informacoes_verdadeiras:"Declaração de veracidade",ciente_riscos:"Ciência dos riscos",autoriza_procedimento:"Autorização do procedimento",autoriza_imagens:"Autorização de imagens",observacoes_adicionais:"Observações adicionais"};
+
+function formatDate(value){if(!/^\d{4}-\d{2}-\d{2}$/.test(String(value||"")))return value||"Não informado";const [y,m,d]=value.split("-");return d+"/"+m+"/"+y}
+function plusDays(date,days){if(!/^\d{4}-\d{2}-\d{2}$/.test(String(date||"")))return null;const d=new Date(date+"T12:00:00Z");d.setUTCDate(d.getUTCDate()+Number(days||21));return d.toISOString().slice(0,10)}
+async function showHistory(client,user){
+const section=document.createElement("section");section.style.cssText="border-top:1px solid #e9d9d8;margin-top:20px;padding-top:18px";const title=document.createElement("h2");title.textContent="Histórico de procedimentos";section.append(title);content.append(section);
+const {data,error}=await db.from("agenda_studio").select("data").eq("owner_id",user.id).maybeSingle();if(error)throw error;
+const raw=data?.data||{};const agenda=typeof raw==="string"?JSON.parse(raw):raw;const clients=Array.isArray(agenda.clients)?agenda.clients:[];const same=clients.filter(c=>c.id===client.id||String(c.phone||"").replace(/\D/g,"")===String(client.phone||"").replace(/\D/g,"")&&String(client.phone||"").replace(/\D/g,"").length>=10);const ids=new Set([client.id,...same.map(c=>c.id)]);
+const list=(Array.isArray(agenda.appointments)?agenda.appointments:[]).filter(a=>ids.has(a.clientId)).sort((a,b)=>String(b.date||"").localeCompare(String(a.date||""))||String(b.time||"").localeCompare(String(a.time||"")));
+if(!list.length){const p=document.createElement("p");p.textContent="Nenhum procedimento registrado para esta cliente.";section.append(p);return}
+const count=document.createElement("p");count.textContent=list.length+" atendimento(s) registrado(s)";section.append(count);
+for(const a of list){const card=document.createElement("div");card.style.cssText="background:#fff;border:1px solid #ebdfe0;border-radius:10px;padding:13px;margin:12px 0";const heading=document.createElement("strong");heading.textContent=formatDate(a.date)+" · "+(a.time||"Horário não informado");card.append(heading);function field(label,value){const p=document.createElement("p");p.style.margin="6px 0";const b=document.createElement("strong");b.textContent=label+": ";p.append(b,document.createTextNode(String(value??"Não informado")));card.append(p)}
+field("Técnica",a.technique||"Não informada");field("Status",a.status||"Não informado");if(a.duration)field("Duração",a.duration+" minutos");if(a.notes)field("Observações",a.notes);if(a.maintenanceOf)field("Manutenção de",formatDate(a.maintenanceOf));const days=Number(a.days)||Number(client.days)||21;
+if(a.status==="Realizado")field("Próxima manutenção prevista",formatDate(plusDays(a.date,days)));else if(a.maintenance)field("Manutenção",a.maintenance);
+section.append(card)}
+}
 window.AS_openFicha=async function(client){
 content.replaceChildren();actions.replaceChildren();backdrop.classList.add("visible");add("Nome",client.name);add("WhatsApp",client.phone);add("Prazo de manutenção",client.days+" dias");add("Observações da agenda",client.notes);add("Anamnese","Carregando...");
 try{
@@ -31,9 +46,9 @@ const {data,error}=await db.from("clientes_studio").select("id,nome,whatsapp,nas
 if(error)throw error;
 const row=(data||[]).find(r=>r.id===client.id||(digits(r.whatsapp).length>=10&&digits(r.whatsapp)===digits(client.phone)));
 content.lastChild.remove();
-if(!row){add("Anamnese","Ainda não cadastrada na ficha digital.");const a=document.createElement("a");a.className="as-link";a.href="./clientes.html";a.textContent="Completar cadastro e anamnese";actions.append(a);return}
+if(!row){await showHistory(client,user);add("Anamnese","Ainda não cadastrada na ficha digital.");const a=document.createElement("a");a.className="as-link";a.href="./clientes.html";a.textContent="Completar cadastro e anamnese";actions.append(a);return}
 add("Nascimento",row.nascimento);add("Instagram",row.instagram);add("Técnica desejada",row.tecnica_desejada);add("Observações internas",row.observacoes_internas);add("Anamnese",row.anamnese_at?"Preenchida":"Pendente");
-if(row.anamnese)for(const [k,v] of Object.entries(row.anamnese))add(labels[k]||k,v);
+if(row.anamnese)for(const [k,v] of Object.entries(row.anamnese))add(labels[k]||k,v);await showHistory(client,user);
 const a=document.createElement("a");a.className="as-link";a.href="./clientes.html?cliente="+encodeURIComponent(row.id);a.textContent="Editar ficha e enviar WhatsApp";actions.append(a);
 }catch(err){add("Erro ao consultar",err.message||"Tente novamente")}
 };
