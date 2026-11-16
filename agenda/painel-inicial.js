@@ -8,7 +8,7 @@ function date(s){const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(String(s||""));return 
 function dayKey(d){return [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-")}
 function difference(a,b){return Math.round((a-b)/86400000)}
 function install(){const content=document.querySelector(".content");if(!content)return;if(panel.parentElement!==content)content.prepend(panel);if(Date.now()-lastLoad>60000&&!busy)load()}
-async function load(){if(busy||!panel.isConnected)return;busy=true;status.textContent="Atualizando dados reais do estúdio…";try{
+async function load(){if(busy||!panel.isConnected)return;busy=true;lastLoad=Date.now();status.textContent="Atualizando dados reais do estúdio…";try{
 const session=JSON.parse(sessionStorage.getItem("as-agenda-session-v1")||"null");if(!session?.access_token||!session?.user?.id){show(null);status.textContent="Entre na sua conta para visualizar os indicadores.";return}
 const cfg=window.AS_AGENDA_CONFIG;if(!cfg?.url||!cfg?.key)throw Error("Configuração da agenda indisponível.");
 const headers={apikey:cfg.key,Authorization:"Bearer "+session.access_token};
