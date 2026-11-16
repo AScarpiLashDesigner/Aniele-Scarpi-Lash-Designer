@@ -1,0 +1,15 @@
+/* Limpeza visual exclusivamente na tela Agenda semanal; outras abas preservadas. */
+.content.as-home-clean>.stats,
+.content.as-home-clean>.weekly-note,
+.content.as-home-clean .instagram-card{display:none!important}
+.content.as-home-clean>.title-row{margin-bottom:15px}
+.content.as-home-clean>.title-row .primary{display:none}
+.content.as-home-clean .workspace{align-items:start}
+.content.as-home-clean .right-column{min-width:0}
+#as-home .actions{margin-top:15px}
+#as-home .actions button,#as-home .actions a{display:inline-flex;align-items:center;justify-content:center;min-height:39px}
+@media(max-width:700px){
+.content.as-home-clean .workspace{min-width:0}
+#as-home .actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+#as-home .actions button,#as-home .actions a{width:100%;text-align:center;font-size:11px;padding:10px 5px;white-space:normal}
+}
