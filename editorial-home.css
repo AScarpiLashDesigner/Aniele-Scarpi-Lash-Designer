@@ -126,3 +126,15 @@ h2::after{background:#B9948A}
   #primeiro-atendimento .primeira-visita-cta p{margin-bottom:15px}
   #duvidas.as-faq{padding-top:36px}
 }
+
+/* Etapa 7 aprovada: FAQ compacto, transições suaves e WhatsApp sem cobrir perguntas. */
+@media(max-width:600px){
+  #primeiro-atendimento.primeira-visita{padding-bottom:18px}
+  #duvidas.as-faq{padding-top:32px;padding-bottom:34px}
+  #duvidas .as-faq-intro{margin-bottom:27px}
+  #duvidas .as-faq-lista{gap:10px}
+  #duvidas .as-faq-lista summary{padding:15px 47px 15px 17px;line-height:1.45}
+  #duvidas .as-faq-rodape{margin-top:26px}
+  #preparacao{padding-top:36px}
+  body.as-duvidas-visiveis .whatsapp{display:none}
+}
