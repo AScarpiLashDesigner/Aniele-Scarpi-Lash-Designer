@@ -86,3 +86,16 @@ h2::after{background:#B9948A}
   #galeria.galeria-secao{padding-bottom:30px}
   #diferenciais.diferenciais{padding-top:38px}
 }
+
+/* Diferenciais no celular: cards compactos e transição mais fluida para Sobre mim. */
+@media(max-width:600px){
+  #diferenciais.diferenciais{padding-bottom:28px}
+  #diferenciais>h2{margin-bottom:24px}
+  #diferenciais .diferenciais-container{gap:25px}
+  #diferenciais .beneficios{gap:15px}
+  #diferenciais .beneficio{padding:21px 22px;border-radius:22px}
+  #diferenciais .beneficio i{font-size:25px;margin-bottom:9px}
+  #diferenciais .beneficio h3{font-size:20px;line-height:1.3;margin-bottom:8px}
+  #diferenciais .beneficio p{font-size:15px;line-height:1.55}
+  #sobre.sobre{padding-top:32px}
+}
