@@ -62,3 +62,14 @@ h2::after{background:#B9948A}
   .banner-imagem{width:100%}
   .banner-imagem img{display:block;width:100%;height:auto;max-height:440px;object-fit:cover;object-position:center 35%;border-radius:9px}
 }
+
+/* Serviços no celular: cabeçalho mais compacto e WhatsApp menos invasivo. */
+@media(max-width:600px){
+  #servicos{padding-top:43px}
+  #servicos .titulo-secao{margin-bottom:29px}
+  #servicos .rotulo-servicos{font-size:25px;letter-spacing:3px;margin-bottom:12px}
+  #servicos .rotulo-servicos::after{margin:13px auto 0}
+  #servicos .titulo-servicos{font-size:clamp(32px,8vw,39px);line-height:1.08;margin:13px auto 12px}
+  #servicos .titulo-secao p{font-size:13px;line-height:1.65;max-width:34ch}
+  .whatsapp{width:44px;height:44px;font-size:23px;right:7px;bottom:78px}
+}
