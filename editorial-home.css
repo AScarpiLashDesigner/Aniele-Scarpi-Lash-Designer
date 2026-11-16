@@ -167,3 +167,18 @@ footer .logo-footer{display:block;width:min(230px,70%);height:auto;margin:0 auto
   footer .redes{margin:20px 0}
   body.as-rodape-visivel .whatsapp{display:none}
 }
+
+/* Rodapé minimalista aprovado: marca menor, sem grandes vazios. */
+footer .logo-footer{width:min(175px,52%);max-width:175px;height:auto;margin:0 auto 13px;border-radius:5px}
+footer .footer-assinatura{font:400 14px/1.55 Poppins,sans-serif;color:#e7d7ce;margin:0 0 12px}
+footer .redes a,footer .redes i{color:#c8a89c}
+footer .copyright{font-size:12px;line-height:1.5;margin-top:25px;padding-top:18px}
+@media(max-width:600px){
+  footer#contato{padding:36px 7% 23px}
+  footer .logo-footer{width:min(170px,52%);margin-bottom:12px}
+  footer .footer-assinatura{font-size:13px;margin-bottom:10px}
+  footer .footer-conteudo>p:not(.copyright):not(.footer-assinatura){font-size:14px;margin-bottom:10px}
+  footer .redes{gap:26px;margin:16px 0 10px}
+  footer .redes a{font-size:23px}
+  footer .copyright{margin-top:22px;padding-top:17px;font-size:11px}
+}
