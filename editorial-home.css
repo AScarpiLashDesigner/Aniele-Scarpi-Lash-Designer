@@ -152,3 +152,18 @@ h2::after{background:#B9948A}
   #preparacao .as-preparo-final{margin-top:25px}
   #preparacao .as-preparo-final p{line-height:1.65;margin-bottom:19px}
 }
+
+/* Etapa 9 aprovada: convite final e rodapé com a marca original. */
+.cta .cta-rotulo{display:block;position:relative;z-index:1;font:600 12px/1.5 Poppins,sans-serif;letter-spacing:.2em;color:#f2dcd3;margin-bottom:16px}
+footer .logo-footer{display:block;width:min(230px,70%);height:auto;margin:0 auto 20px;border-radius:8px}
+@media(max-width:600px){
+  .cta{padding-top:38px;padding-bottom:40px;margin-top:44px;margin-bottom:50px}
+  .cta .cta-rotulo{font-size:10px;letter-spacing:.17em;margin-bottom:12px}
+  .cta h2{line-height:1.18;margin-bottom:15px}
+  .cta p{font-size:15px;line-height:1.65;margin-bottom:24px}
+  .cta .botao{min-height:50px}
+  footer{padding-top:46px}
+  footer .logo-footer{width:min(215px,72%);margin-bottom:19px}
+  footer .redes{margin:20px 0}
+  body.as-rodape-visivel .whatsapp{display:none}
+}
