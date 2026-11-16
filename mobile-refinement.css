@@ -5,7 +5,7 @@
   header{flex-direction:row;justify-content:space-between;align-items:center;gap:12px;padding:12px 5%;min-height:76px}
   header .logo img{width:155px;height:52px;object-fit:contain}
   .as-menu-toggle{display:flex;align-items:center;justify-content:center;width:46px;height:46px;flex-shrink:0;border:1px solid #e9dcd7;background:#fff9f7;border-radius:12px;color:#5a3a2d;font-size:23px;cursor:pointer}
-  header nav{position:absolute;top:100%;left:0;right:0;display:flex;flex-direction:column;align-items:stretch;gap:0;padding:8px 5% 16px;background:#fffdfc;box-shadow:0 12px 24px #5a3a2d17;border-top:1px solid #eee4e0;max-height:calc(100dvh - 76px);overflow:auto;visibility:hidden;opacity:0;pointer-events:none;transform:translateY(-8px);transition:opacity .2s ease,transform .2s ease,visibility .2s}
+  header nav{position:absolute;top:100%;left:0;right:0;display:flex;flex-direction:column;align-items:stretch;gap:0;padding:8px 5% 16px;background:#fffdfc;box-shadow:0 12px 24px #5a3a2d17;border-top:1px solid #eee4e0;max-height:calc(100dvh - 76px);overflow:auto;visibility:hidden;opacity:0;pointer-events:none;transform:translateY(-8px);transition:opacity .08s ease,transform .08s ease}
   header.as-menu-open nav{visibility:visible;opacity:1;pointer-events:auto;transform:translateY(0)}
   header nav a{display:block;padding:12px 10px;font-size:15px;font-weight:500;border-bottom:1px solid #f3eeeb;color:#5a3a2d}
   header nav a::after{display:none}
@@ -60,3 +60,10 @@
 .primeira-visita .botao:hover{background:#4f342c}
 @media(max-width:992px){.primeira-visita{padding:65px 7%}.primeira-visita-etapas{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.primeira-visita{padding:58px 7%}.primeira-visita-cabecalho{margin-bottom:28px}.primeira-visita-cabecalho p{font-size:15px}.primeira-visita-etapas{grid-template-columns:1fr;gap:13px}.primeira-visita-card{padding:23px}.primeira-visita-card h3{margin:9px 0}.primeira-visita-cta .botao{width:100%;text-align:center}}
+
+/* Menu mobile: resposta visual imediata ao toque. */
+@media(max-width:992px){
+  .as-menu-toggle{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+  header nav{transform:none}
+  header.as-menu-open nav{transform:none}
+}
