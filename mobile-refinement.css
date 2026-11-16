@@ -1,0 +1,43 @@
+/* Refinamento responsivo — preserva o layout desktop original */
+@media(max-width:992px){
+  html{scroll-padding-top:85px}
+  body{overflow-x:hidden}
+  header{flex-direction:row;justify-content:space-between;align-items:center;gap:12px;padding:12px 5%;min-height:76px}
+  header .logo img{width:155px;height:52px;object-fit:contain}
+  .as-menu-toggle{display:flex;align-items:center;justify-content:center;width:46px;height:46px;flex-shrink:0;border:1px solid #e9dcd7;background:#fff9f7;border-radius:12px;color:#5a3a2d;font-size:23px;cursor:pointer}
+  header nav{position:absolute;top:100%;left:0;right:0;display:flex;flex-direction:column;align-items:stretch;gap:0;padding:8px 5% 16px;background:#fffdfc;box-shadow:0 12px 24px #5a3a2d17;border-top:1px solid #eee4e0;max-height:calc(100dvh - 76px);overflow:auto;visibility:hidden;opacity:0;pointer-events:none;transform:translateY(-8px);transition:opacity .2s ease,transform .2s ease,visibility .2s}
+  header.as-menu-open nav{visibility:visible;opacity:1;pointer-events:auto;transform:translateY(0)}
+  header nav a{display:block;padding:12px 10px;font-size:15px;font-weight:500;border-bottom:1px solid #f3eeeb;color:#5a3a2d}
+  header nav a::after{display:none}
+  header nav a:last-child{border-bottom:0}
+  .banner{min-height:auto;gap:34px;padding:58px 7% 62px;flex-direction:column;text-align:center}
+  .texto-banner{width:100%;max-width:620px}
+  .banner h1{font-size:clamp(34px,7vw,50px);line-height:1.17;margin:18px 0}
+  .banner p{font-size:clamp(15px,3.8vw,17px);line-height:1.65;max-width:560px;margin:0 auto}
+  .banner .botao{margin-top:23px;display:inline-flex;align-items:center;justify-content:center;min-height:54px;max-width:420px;width:100%;font-size:15px;padding:14px 24px}
+  .banner-imagem{width:100%}
+  .banner-imagem img{width:min(100%,480px);height:auto;border-radius:24px}
+  section{scroll-margin-top:85px}
+}
+@media(max-width:600px){
+  header{padding:10px 6%;min-height:70px}
+  header .logo img{width:145px;height:48px}
+  header nav{max-height:calc(100dvh - 70px)}
+  .banner{padding:42px 7% 48px;gap:30px}
+  .nome-marca{font-size:clamp(17px,4.7vw,22px);letter-spacing:2px}
+  .subtitulo{letter-spacing:2px}
+  .banner h1{font-size:clamp(32px,8.6vw,42px);margin:16px 0}
+  .banner p{font-size:15px}
+  .banner .botao{width:100%;max-width:none}
+  .banner-imagem img{border-radius:22px;box-shadow:0 12px 30px #5a3a2d22}
+  section{padding:56px 7%}
+  h2{font-size:clamp(28px,7vw,34px);margin-bottom:32px}
+  .rotulo-servicos{font-size:clamp(22px,6vw,30px);letter-spacing:3px}
+  .cards,.galeria,.diferenciais-container,.sobre-container{min-width:0}
+  .card,.item-galeria{min-width:0}
+  .cta{margin:45px 5%;padding:38px 7%;border-radius:22px}
+  .cta .botao{max-width:100%;width:100%;text-align:center}
+  .whatsapp{width:55px;height:55px;font-size:28px;right:16px;bottom:16px}
+}
+@media(min-width:993px){.as-menu-toggle{display:none}}
+@media(prefers-reduced-motion:reduce){header nav{transition:none}}
