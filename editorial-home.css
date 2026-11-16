@@ -108,3 +108,21 @@ h2::after{background:#B9948A}
   #primeiro-atendimento.primeira-visita{padding-top:42px}
   body.as-sobre-visivel .whatsapp{display:none}
 }
+
+/* Etapa 6 aprovada: primeiro atendimento mais leve no celular, sem alterar textos ou links. */
+@media(max-width:600px){
+  #primeiro-atendimento.primeira-visita{padding-top:30px;padding-bottom:28px}
+  #primeiro-atendimento .primeira-visita-rotulo{margin-bottom:10px}
+  #primeiro-atendimento .primeira-visita h2{margin-bottom:18px}
+  #primeiro-atendimento .primeira-visita-cabecalho{margin-bottom:23px}
+  #primeiro-atendimento .primeira-visita-cabecalho h2{margin-bottom:18px}
+  #primeiro-atendimento .primeira-visita-cabecalho p{line-height:1.65}
+  #primeiro-atendimento .primeira-visita-etapas{gap:12px}
+  #primeiro-atendimento .primeira-visita-card{padding:20px 21px;border-radius:18px}
+  #primeiro-atendimento .primeira-visita-numero{font-size:31px}
+  #primeiro-atendimento .primeira-visita-card h3{font-size:21px;margin:8px 0}
+  #primeiro-atendimento .primeira-visita-card p{font-size:14px;line-height:1.65}
+  #primeiro-atendimento .primeira-visita-cta{margin-top:28px}
+  #primeiro-atendimento .primeira-visita-cta p{margin-bottom:15px}
+  #duvidas.as-faq{padding-top:36px}
+}
