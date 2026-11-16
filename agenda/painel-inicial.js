@@ -38,7 +38,7 @@ show([todayApps,due,pending,requests.length]);status.textContent="Atualizado às
 panel.querySelector("#as-home-refresh").onclick=()=>{lastLoad=0;load()};
 panel.querySelector("#as-home-new-client").onclick=()=>{location.href="./clientes.html"};
 panel.querySelector("#as-home-new-appointment").onclick=()=>{document.querySelector(".content .title-row button.primary")?.click()};
-panel.querySelector("#as-home-slots").onclick=()=>{document.querySelector(".content .instagram-card button")?.click()};
+panel.querySelector("#as-home-slots").onclick=()=>{window.AS_openHorariosLivres?.()};
 show(null);new MutationObserver(install).observe(document.getElementById("root"),{childList:true,subtree:true});install();
 document.addEventListener("visibilitychange",()=>{if(!document.hidden&&Date.now()-lastLoad>60000)load()});
 })();
