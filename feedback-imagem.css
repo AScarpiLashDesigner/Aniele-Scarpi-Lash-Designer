@@ -1,0 +1,5 @@
+/* O print original permanece intacto. O enquadramento destaca o comentário. */
+.as-feedback-proof{display:block;margin-top:22px;color:#68483d;font-size:11px;text-decoration:none}
+.as-feedback-proof-window{position:relative;display:block;overflow:hidden;aspect-ratio:691/220;background:#181c1f;border-radius:7px}
+.as-feedback-proof-window img{position:absolute;top:0;left:0;display:block;width:100%;height:auto;max-width:none;max-height:none;transform:translateY(-41.666667%);border-radius:0}
+.as-feedback-proof-label{display:block;padding-top:8px;text-decoration:underline;text-underline-offset:3px}
