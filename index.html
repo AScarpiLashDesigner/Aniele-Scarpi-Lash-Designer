@@ -27,7 +27,7 @@
     <link rel="stylesheet" href="servicos-interativos.css?v=20261116-2">
     <link rel="stylesheet" href="perguntas-frequentes.css?v=1">
     <link rel="stylesheet" href="preparacao-atendimento.css?v=1">
-    <link rel="stylesheet" href="editorial-home.css?v=20261116-11">
+    <link rel="stylesheet" href="editorial-home.css?v=20261116-12">
 </head>
 
 <body>
@@ -577,23 +577,10 @@
     ========================== -->
 
     <section class="cta">
-
-        <h2>
-            Pronta para transformar seu olhar?
-        </h2>
-
-        <p>
-            Agende seu horário e descubra o efeito
-            perfeito para você.
-        </p>
-
-        <a
-            href="./agendar.html"
-            target="_blank"
-            class="botao">
-            Agendar meu horário
-        </a>
-
+        <span class="cta-rotulo">SEU MOMENTO DE BRILHAR</span>
+        <h2>Seu olhar merece um cuidado especial.</h2>
+        <p>Realce sua beleza natural com uma extensão de cílios personalizada, pensada especialmente para você.</p>
+        <a href="./agendar.html" target="_blank" rel="noopener noreferrer" class="botao">Agendar meu horário</a>
     </section>
 
 
@@ -605,9 +592,7 @@
 
         <div class="footer-conteudo">
 
-           <p>
-                Aniele Scarpi Lash Designer
-            </p>
+           <img class="logo-footer" src="imagens/logo.jpg" alt="Aniele Scarpi Lash Designer">
 
             <p>
                 Toledo - MG
@@ -690,6 +675,15 @@
       new IntersectionObserver(entries => {
         document.body.classList.toggle('as-duvidas-visiveis', entries[0].isIntersecting);
       }, {threshold:0}).observe(faq);
+    })();
+    </script>
+    <script>
+    (() => {
+      const footer = document.getElementById('contato');
+      if (!footer || !('IntersectionObserver' in window)) return;
+      new IntersectionObserver(entries => {
+        document.body.classList.toggle('as-rodape-visivel', entries[0].isIntersecting);
+      }, {threshold:0}).observe(footer);
     })();
     </script>
     <script src="mobile-menu.js?v=20261116-1" defer></script>
