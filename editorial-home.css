@@ -79,3 +79,10 @@ h2::after{background:#B9948A}
   #servicos .titulo-secao p{max-width:42ch;text-wrap:balance;margin-left:auto;margin-right:auto}
   body.as-servicos-visiveis .whatsapp{display:none}
 }
+
+/* Galeria mobile: centralizar a foto final sem ampliar seu tamanho e suavizar a transição. */
+@media(max-width:600px){
+  #galeria .galeria>.item-galeria:last-child:nth-child(odd){grid-column:1/-1;width:calc((100% - 12px)/2);justify-self:center}
+  #galeria.galeria-secao{padding-bottom:30px}
+  #diferenciais.diferenciais{padding-top:38px}
+}
