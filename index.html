@@ -27,7 +27,7 @@
     <link rel="stylesheet" href="servicos-interativos.css?v=20261116-2">
     <link rel="stylesheet" href="perguntas-frequentes.css?v=1">
     <link rel="stylesheet" href="preparacao-atendimento.css?v=1">
-    <link rel="stylesheet" href="editorial-home.css?v=20261116-4">
+    <link rel="stylesheet" href="editorial-home.css?v=20261116-5">
 </head>
 
 <body>
@@ -677,6 +677,17 @@ Porque quando você se sente bonita, algo dentro de você também se transforma.
     </a>
 
 
+    <script>
+    // Esconde o atalho flutuante enquanto os cards de serviços estão visíveis no celular.
+    (() => {
+      const secao = document.getElementById('servicos');
+      if (!secao || !('IntersectionObserver' in window)) return;
+      const observer = new IntersectionObserver(entries => {
+        document.body.classList.toggle('as-servicos-visiveis', entries[0].isIntersecting);
+      }, {threshold: 0});
+      observer.observe(secao);
+    })();
+    </script>
     <script src="mobile-menu.js?v=20261116-1" defer></script>
     <script src="servicos-interativos.js?v=20261116-2" defer></script>
 </body>
