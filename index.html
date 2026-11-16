@@ -28,6 +28,7 @@
     <link rel="stylesheet" href="perguntas-frequentes.css?v=1">
     <link rel="stylesheet" href="preparacao-atendimento.css?v=1">
     <link rel="stylesheet" href="editorial-home.css?v=20261116-14">
+    <link rel="stylesheet" href="feedback.css?v=20261116-1">
 </head>
 
 <body>
@@ -429,6 +430,28 @@
          CHAMADA PARA AGENDAMENTO
     ========================== -->
 
+
+<section id="avaliacoes" class="as-feedback" aria-labelledby="as-feedback-title">
+ <div class="as-feedback-intro"><span class="as-feedback-label">EXPERIÊNCIAS QUE ACOLHEM</span><h2 id="as-feedback-title">O que minhas<br>clientes dizem.</h2><p>Cada olhar tem uma história. Aqui, minhas clientes compartilham a experiência de se cuidar comigo.</p></div>
+ <div id="as-feedback-cards" class="as-feedback-cards"></div>
+ <p id="as-feedback-state" class="as-feedback-state" role="status" aria-live="polite">As avaliações das clientes são exibidas aqui.</p>
+ <button id="as-feedback-retry" type="button" class="as-feedback-retry" hidden>Tentar novamente</button>
+ <button id="as-feedback-more" type="button" class="as-feedback-more" hidden>Ver mais avaliações</button>
+ <details id="deixar-avaliacao" class="as-feedback-details"><summary>Deixar minha avaliação</summary>
+  <form id="as-feedback-form" class="as-feedback-form"><h3>Como foi seu atendimento?</h3><p>Sua opinião é especial para mim e ajuda outras clientes a conhecer meu trabalho.</p>
+   <label class="as-feedback-field" for="as-feedback-name">Como você quer aparecer no site?</label><input id="as-feedback-name" name="nome" type="text" required minlength="2" maxlength="50" autocomplete="given-name" placeholder="Use seu primeiro nome ou iniciais">
+   <fieldset><legend>Sua nota para o atendimento</legend><div class="as-feedback-ratings">
+   <label><input type="radio" name="nota" value="1" required><span>1 ★</span></label><label><input type="radio" name="nota" value="2"><span>2 ★</span></label><label><input type="radio" name="nota" value="3"><span>3 ★</span></label><label><input type="radio" name="nota" value="4"><span>4 ★</span></label><label><input type="radio" name="nota" value="5"><span>5 ★</span></label>
+   </div></fieldset>
+   <label class="as-feedback-field" for="as-feedback-comment">Conte como foi sua experiência</label><textarea id="as-feedback-comment" name="comentario" required minlength="10" maxlength="800" placeholder="O que você achou do resultado e do atendimento? Evite incluir telefone ou outras informações pessoais."></textarea><div class="as-feedback-count"><span id="as-feedback-count">0</span>/800</div>
+   <label class="as-feedback-honey" aria-hidden="true">Deixe este campo vazio<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+   <label class="as-feedback-consent"><input type="checkbox" name="consentimento" required><span>Autorizo a publicação do nome informado, da minha nota e do meu comentário no site de Aniele Scarpi. Entendo que a avaliação será analisada antes de ser publicada e posso solicitar sua retirada pelo <a href="https://wa.me/5535991315723" target="_blank" rel="noopener noreferrer">WhatsApp do estúdio</a>.</span></label>
+   <button type="submit">Enviar minha avaliação</button><div id="as-feedback-message" class="as-feedback-message" role="status" aria-live="polite"></div>
+  </form>
+ </details><p class="as-feedback-invite">Já foi atendida por mim? Vou adorar saber como foi sua experiência.</p>
+ <noscript><p>Ative o JavaScript para ler e enviar avaliações.</p></noscript>
+</section>
+
     <section id="diferenciais" class="diferenciais">
     <h2>Por que escolher meu trabalho?</h2>
 
@@ -686,6 +709,9 @@
     </script>
     <script src="mobile-menu.js?v=20261116-1" defer></script>
     <script src="servicos-interativos.js?v=20261116-2" defer></script>
+    <script src="agenda/config.js"></script>
+    <script type="module" src="feedback.js?v=20261116-1"></script>
 </body>
 
 </html>
+
