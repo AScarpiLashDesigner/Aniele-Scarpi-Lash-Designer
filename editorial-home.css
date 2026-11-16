@@ -52,3 +52,13 @@ h2::after{background:#B9948A}
   .banner-imagem img{border-radius:7px;box-shadow:0 14px 35px #5a3a2d1b}
 }
 @media(prefers-reduced-motion:reduce){.texto-banner,.banner-imagem{animation:none}}
+
+/* Ajuste aprovado: primeira dobra do site no celular, sem alterar a fotografia original. */
+@media(max-width:600px){
+  .banner{padding-top:30px;padding-bottom:46px;gap:23px}
+  .banner h1{margin:14px 0 17px;line-height:1.12}
+  .banner p{font-size:14px;line-height:1.65;max-width:36ch}
+  .banner .botao{margin-top:20px;padding:15px 25px}
+  .banner-imagem{width:100%}
+  .banner-imagem img{display:block;width:100%;height:auto;max-height:440px;object-fit:cover;object-position:center 35%;border-radius:9px}
+}
