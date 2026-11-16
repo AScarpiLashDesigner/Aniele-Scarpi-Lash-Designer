@@ -1,0 +1,16 @@
+/* Orientações pré-atendimento | Aniele Scarpi */
+#preparacao.as-preparo{padding:85px max(22px,calc((100% - 1120px)/2));background:#fffaf8;color:#5a3a2d;scroll-margin-top:95px}
+.as-preparo-cabecalho{text-align:center;max-width:730px;margin:0 auto 38px}
+.as-preparo-rotulo{font:600 12px Poppins,sans-serif;letter-spacing:.2em;color:#9b766c}
+.as-preparo-cabecalho h2{font:600 clamp(30px,4vw,43px)/1.22 'Playfair Display',Georgia,serif;color:#5a3a2d;margin:13px 0 17px}
+.as-preparo-cabecalho p{font:400 15px/1.8 Poppins,sans-serif;color:#77665f}
+.as-preparo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:19px}
+.as-preparo-item{border:1px solid #e9d8d2;background:#fff;border-radius:21px;padding:27px;box-shadow:0 9px 26px #583d3008}
+.as-preparo-numero{display:inline-flex;align-items:center;justify-content:center;border-radius:50%;width:40px;height:40px;background:#f6eae6;color:#936a60;font:600 13px Poppins,sans-serif}
+.as-preparo-item h3{font:600 19px/1.4 'Playfair Display',Georgia,serif;color:#5a3a2d;margin:17px 0 10px}
+.as-preparo-item p{font:400 14px/1.8 Poppins,sans-serif;color:#75665f;margin:0}
+.as-preparo-final{text-align:center;max-width:780px;margin:32px auto 0}
+.as-preparo-final p{font:400 14px/1.8 Poppins,sans-serif;color:#75665f;margin:0 0 23px}
+.as-preparo-final a{display:inline-block;text-decoration:none;background:#68483d;color:white;padding:14px 28px;border-radius:35px;font:600 14px Poppins,sans-serif}
+.as-preparo-final a:hover{background:#50362d}.as-preparo-final a:focus-visible{outline:3px solid #b99186;outline-offset:3px}
+@media(max-width:680px){#preparacao.as-preparo{padding:60px 20px}.as-preparo-grid{grid-template-columns:1fr;gap:13px}.as-preparo-item{padding:23px}.as-preparo-cabecalho{margin-bottom:26px}}
