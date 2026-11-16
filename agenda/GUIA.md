@@ -2,11 +2,17 @@
 
 Esta é uma versão independente do login e da hospedagem ChatGPT. O código fica no seu GitHub. Os registros devem ficar no seu projeto privado Supabase, protegidos por login e regras RLS. Não existe banco ou senha de demonstração dentro do código. A configuração real precisa ser concluída e testada antes de migrar o histórico.
 
-## 1. Criar/conectar o banco na sua conta
+## Banco já configurado
+
+O projeto Agenda Aniele Scarpi foi criado na conta da proprietária, na região São Paulo, com as tabelas, regras de acesso por usuário e cópias de versões anteriores. A conexão publicável já está em `config.js`. Nenhuma senha ou registro de cliente está no GitHub. A primeira conta de acesso da agenda ainda precisa ser criada pela proprietária.
+
+Na tela de login, use Configurar meu primeiro acesso para abrir o painel do seu projeto. Em Authentication > Users > Add user > Create a new user, escolha seu e-mail e sua própria senha. Se houver a opção Auto Confirm User, ela confirma apenas o usuário que a própria administradora está criando. Volte à agenda e entre. Você pode consultar os passos de instalação abaixo caso queira instalar novamente em outro projeto.
+
+## 1. Criar/conectar outro banco na sua conta
 
 Crie ou conecte sua conta Supabase. Crie um projeto para o estúdio e guarde as informações de recuperação da conta. Confira as condições e limites do plano no provedor; não há garantia de gratuidade permanente. Escolha a região e as configurações do seu projeto.
 
-No SQL Editor de um projeto novo, execute `database/setup.sql` uma vez. O script cria `agenda_studio`, `agenda_history`, regras que limitam cada usuário aos próprios registros e um gatilho que preserva a versão anterior a cada atualização. Caso uma política já exista, a operação é cancelada em transação: não remova regras de segurança para forçar a execução.
+No SQL Editor de um projeto novo, execute `database/setup.sql` uma vez. O script cria `agenda_studio`, `agenda_history`, regras que limitam cada usuário aos próprios registros e um gatilho que preserva a versão anterior a cada atualização. Este projeto já recebeu o script; não o execute novamente nele. Caso uma política já exista em outra instalação, a operação é cancelada em transação: não remova regras de segurança para forçar a execução.
 
 Em Authentication > Users, crie a conta de acesso da proprietária, usando seu e-mail e senha própria. Guarde a senha de forma segura. Desative cadastros públicos se apenas você for usar a agenda. Não envie a senha por chat nem escreva senhas no GitHub. Recuperação de senha pode ser feita pelo painel da proprietária do projeto; confirme o e-mail de recuperação.
 
