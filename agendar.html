@@ -1,8 +1,88 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Agendar horário | Aniele Scarpi</title><style>:root{font-family:Poppins,Arial,sans-serif;color:#513d38;background:#faf6f5}*{box-sizing:border-box}body{margin:0}header{text-align:center;padding:36px 16px 15px}h1{font-family:Georgia,serif;font-size:32px;margin:10px}main{max-width:570px;margin:16px auto 50px;padding:0 16px}.card{background:white;border:1px solid #ecdedb;border-radius:18px;padding:24px;box-shadow:0 10px 30px #442a2010}label{display:block;font-weight:600;margin:16px 0 7px}input,select{width:100%;font:inherit;padding:13px;border:1px solid #d6c2bd;border-radius:9px;background:white}button{font:inherit;background:#694a42;color:white;border:0;border-radius:9px;padding:14px 20px;cursor:pointer;width:100%;margin-top:20px}button:disabled{opacity:.5}.muted{color:#766a67;line-height:1.5}.success{color:#276c4a}.error{color:#a12626}a{color:#694a42}#message{min-height:25px}</style></head><body><header><p>ANIELE SCARPI · LASH DESIGNER</p><h1>Seu próximo olhar começa aqui</h1><p class="muted">Toledo · MG</p></header><main><div class="card"><h2>Solicitar agendamento</h2><p class="muted">Escolha uma data e um horário. Seu agendamento só estará confirmado após nossa aprovação pelo WhatsApp.</p><form id="form"><label for="nome">Nome completo</label><input id="nome" required maxlength="120" autocomplete="name"><label for="whatsapp">WhatsApp com DDD</label><input id="whatsapp" type="tel" required inputmode="tel" maxlength="20" placeholder="(35) 99999-9999"><label for="tecnica">Técnica desejada</label><select id="tecnica" required><option value="">Selecione</option><option>Fio a fio</option><option>Volume Brasileiro</option><option>Volume Egípcio</option><option>Volume Inglês</option><option>Volume Luxo</option><option>Volume Wispy</option><option>Efeito Fox Eyes</option><option>Efeito Molhado</option><option>Outra técnica / avaliação</option></select><label for="date">Data disponível</label><select id="date" required><option value="">Carregando datas...</option></select><label for="time">Horário disponível</label><select id="time" required><option value="">Escolha a data primeiro</option></select><button id="submit" disabled>Solicitar agendamento</button><p id="message" role="status"></p></form><p class="muted">Se precisar de ajuda, <a href="https://wa.me/5535991315723" target="_blank" rel="noopener">fale pelo WhatsApp</a>.</p></div></main><script>
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#faf6f4">
+<meta name="description" content="Solicite seu horário para extensão de cílios com Aniele Scarpi Lash Designer, em Toledo - MG.">
+<title>Agendar meu horário | Aniele Scarpi Lash Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{font-family:Poppins,Arial,sans-serif;color:#563d35;background:#faf6f4;font-synthesis:none}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 0% 5%,#f1e1de 0%,transparent 38%),radial-gradient(ellipse at 100% 100%,#f6e9e4 0%,transparent 40%),#faf6f4}
+a{color:#68483d}a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #b99186;outline-offset:3px}
+.topbar{max-width:1040px;margin:auto;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:15px}
+.brand{font-family:'Playfair Display',Georgia,serif;font-weight:700;font-size:18px;letter-spacing:.02em;color:#563d35;text-decoration:none}
+.brand small{display:block;font:500 10px Poppins,sans-serif;letter-spacing:.25em;color:#9d766d;margin-top:3px}
+.back{font-size:13px;font-weight:500;text-decoration:none;border:1px solid #d8bfb8;border-radius:30px;padding:10px 16px;white-space:nowrap}
+.back:hover{background:#fff}
+main{max-width:1040px;margin:24px auto 70px;padding:0 24px;display:grid;grid-template-columns:.85fr 1.15fr;gap:52px;align-items:start}
+.intro{padding:46px 0 20px}.eyebrow{font-size:11px;letter-spacing:.23em;font-weight:600;color:#a0766b}
+h1{font:600 clamp(35px,4.6vw,56px)/1.16 'Playfair Display',Georgia,serif;letter-spacing:-.02em;margin:19px 0;color:#55382f}
+.intro>p{color:#75665f;line-height:1.85;font-size:15px;max-width:410px}
+.accent{height:2px;width:62px;background:#bd968b;margin:26px 0}
+.info{display:flex;align-items:flex-start;gap:12px;margin-top:23px;color:#6b5650;font-size:13px;line-height:1.7}
+.info .symbol{width:34px;height:34px;flex:none;display:grid;place-items:center;border:1px solid #e4cbc4;background:#fff;border-radius:50%;font-size:15px}
+.card{background:#fff;border:1px solid #eadbd6;border-radius:24px;padding:35px;box-shadow:0 20px 55px #5d3a2b10}
+.card h2{font:600 27px/1.3 'Playfair Display',Georgia,serif;margin:0 0 9px;color:#563a31}
+.muted{color:#81706a;font-size:13px;line-height:1.75}.card>.muted{margin:0 0 26px}
+.field{margin-top:17px}label{display:block;font-weight:600;font-size:13px;margin-bottom:8px;color:#62473f}
+input,select{width:100%;font:400 14px Poppins,Arial,sans-serif;padding:13px 14px;border:1px solid #decac4;border-radius:11px;background:#fff;color:#513d38;min-height:48px}
+input::placeholder{color:#a6958f}input:focus,select:focus{border-color:#b58e82;outline:2px solid #e6d0ca;outline-offset:0}
+.fields-two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+button{font:600 14px Poppins,sans-serif;background:#68483d;color:white;border:0;border-radius:30px;padding:15px 20px;cursor:pointer;width:100%;margin-top:26px;min-height:52px;transition:background .2s}
+button:hover:not(:disabled){background:#50352d}button:disabled{opacity:.55;cursor:not-allowed}
+.notice{background:#faf5f2;border:1px solid #efdfda;padding:12px 14px;border-radius:12px;color:#735e57;font-size:12px;line-height:1.65;margin-top:21px}
+.success{color:#276c4a}.error{color:#a12626}#message{min-height:24px;font-size:13px;line-height:1.6;margin:13px 0}
+.help{border-top:1px solid #f0e5e1;margin-top:15px;padding-top:17px;text-align:center}
+footer{text-align:center;color:#99857f;font-size:11px;padding:0 20px 24px}
+@media(max-width:780px){main{grid-template-columns:1fr;gap:12px;max-width:620px;margin-top:5px}.intro{padding:12px 0 10px}h1{font-size:39px}.intro>p{margin-bottom:0}.info{margin-top:14px}.card{padding:25px}}
+@media(max-width:440px){.topbar{padding:17px 17px}.brand{font-size:16px}.back{padding:9px 11px;font-size:12px}main{padding:0 16px;margin-bottom:35px}h1{font-size:34px}.card{padding:23px 19px;border-radius:20px}.fields-two{grid-template-columns:1fr;gap:0}}
+</style>
+</head>
+<body>
+<header class="topbar">
+<a class="brand" href="./index.html">Aniele Scarpi<small>LASH DESIGNER</small></a>
+<a class="back" href="./index.html">← Voltar ao site</a>
+</header>
+<main>
+<section class="intro" aria-labelledby="titulo">
+<span class="eyebrow">SEU MOMENTO DE BELEZA</span>
+<h1 id="titulo">Seu próximo olhar começa aqui.</h1>
+<p>Um atendimento pensado para realçar sua beleza com leveza, cuidado e sofisticação.</p>
+<div class="accent"></div>
+<div class="info"><span class="symbol" aria-hidden="true">♡</span><span><strong>Atendimento personalizado</strong><br>Escolha a técnica que mais combina com você.</span></div>
+<div class="info"><span class="symbol" aria-hidden="true">◷</span><span><strong>Aplicação com tempo e atenção</strong><br>Reserve aproximadamente 2 horas para o procedimento.</span></div>
+<div class="info"><span class="symbol" aria-hidden="true">⌖</span><span><strong>Toledo · Minas Gerais</strong><br>Agende com praticidade, diretamente pelo site.</span></div>
+</section>
+<section class="card" aria-labelledby="form-title">
+<h2 id="form-title">Solicitar agendamento</h2>
+<p class="muted">Preencha seus dados e escolha um dos horários disponíveis na agenda.</p>
+<form id="form">
+<div class="field"><label for="nome">Nome completo</label><input id="nome" required maxlength="120" autocomplete="name" placeholder="Como podemos chamar você?"></div>
+<div class="field"><label for="whatsapp">WhatsApp com DDD</label><input id="whatsapp" type="tel" required inputmode="tel" autocomplete="tel" maxlength="20" placeholder="(35) 99999-9999"></div>
+<div class="field"><label for="tecnica">Técnica desejada</label><select id="tecnica" required><option value="">Selecione sua técnica</option><option>Fio a fio</option><option>Volume Brasileiro</option><option>Volume Egípcio</option><option>Volume Inglês</option><option>Volume Luxo</option><option>Volume Wispy</option><option>Efeito Fox Eyes</option><option>Efeito Molhado</option><option>Outra técnica / avaliação</option></select></div>
+<div class="fields-two">
+<div class="field"><label for="date">Data disponível</label><select id="date" required><option value="">Carregando datas...</option></select></div>
+<div class="field"><label for="time">Horário disponível</label><select id="time" required><option value="">Escolha a data primeiro</option></select></div>
+</div>
+<div class="notice">♡ Seu horário será reservado somente após a aprovação da solicitação e a confirmação pelo WhatsApp.</div>
+<button id="submit" type="submit" disabled>Solicitar meu horário</button>
+<p id="message" role="status" aria-live="polite"></p>
+</form>
+<p class="muted help">Precisa de ajuda? <a href="https://wa.me/5535991315723" target="_blank" rel="noopener noreferrer">Converse comigo pelo WhatsApp</a>.</p>
+</section>
+</main>
+<footer>© 2026 Aniele Scarpi | Lash Designer · Toledo, MG</footer>
+<script>
 const tecnicaParam=new URLSearchParams(window.location.search).get("tecnica");const tecnicaSelect=document.getElementById("tecnica");if(tecnicaParam){const match=Array.from(tecnicaSelect.options).find(o=>o.textContent.toLocaleLowerCase("pt-BR")===tecnicaParam.toLocaleLowerCase("pt-BR"));if(match)tecnicaSelect.value=match.value;}
 const api="https://weotpmakhcifhjlujrsz.supabase.co/functions/v1/agendamento-publico",date=document.getElementById("date"),time=document.getElementById("time"),submit=document.getElementById("submit"),msg=document.getElementById("message");let days=[];
 function fill(select,placeholder,values){select.replaceChildren();const first=document.createElement("option");first.value="";first.textContent=placeholder;select.append(first);for(const [value,label] of values){const option=document.createElement("option");option.value=value;option.textContent=label;select.append(option)}}
-function showSlots(){const d=days.find(d=>d.date===date.value);fill(time,d?"Selecione um horário":"Escolha a data primeiro",(d?.slots||[]).map(t=>[t,t]));submit.disabled=!d}
+function showSlots(){const d=days.find(d=>d.date===date.value);fill(time,d?"Selecione um horário":"Escolha a data primeiro",(d?.slots||[]).map(t=>[t,t]));submit.disabled=!d||!time.value}
 async function load(){try{const res=await fetch(api,{cache:"no-store"});const json=await res.json();if(!res.ok)throw Error(json.error||"Não foi possível carregar");days=json.days||[];fill(date,days.length?"Selecione a data":"Sem horários disponíveis",days.map(d=>[d.date,new Date(d.date+"T12:00:00").toLocaleDateString("pt-BR",{weekday:"long",day:"2-digit",month:"long"})]));showSlots()}catch(e){msg.className="error";msg.textContent=e.message;fill(date,"Horários temporariamente indisponíveis",[])}}
-date.onchange=showSlots;document.getElementById("form").onsubmit=async e=>{e.preventDefault();submit.disabled=true;msg.textContent="Enviando solicitação...";try{const body={nome:document.getElementById("nome").value,whatsapp:document.getElementById("whatsapp").value,tecnica:document.getElementById("tecnica").value,date:date.value,time:time.value};const res=await fetch(api,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});const json=await res.json();if(!res.ok)throw Error(json.error||"Erro ao solicitar");msg.className="success";msg.textContent=json.message;document.getElementById("form").reset();await load()}catch(err){msg.className="error";msg.textContent=err.message}finally{submit.disabled=false}};load();
-</script></body></html>
+date.onchange=showSlots;time.onchange=()=>{submit.disabled=!date.value||!time.value};document.getElementById("form").onsubmit=async e=>{e.preventDefault();submit.disabled=true;msg.textContent="Enviando solicitação...";try{const body={nome:document.getElementById("nome").value,whatsapp:document.getElementById("whatsapp").value,tecnica:document.getElementById("tecnica").value,date:date.value,time:time.value};const res=await fetch(api,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});const json=await res.json();if(!res.ok)throw Error(json.error||"Erro ao solicitar");msg.className="success";msg.textContent=json.message;document.getElementById("form").reset();await load()}catch(err){msg.className="error";msg.textContent=err.message}finally{submit.disabled=!date.value||!time.value}};load();
+</script>
+</body>
+</html>
