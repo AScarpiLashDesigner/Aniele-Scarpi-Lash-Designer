@@ -27,7 +27,7 @@
     <link rel="stylesheet" href="servicos-interativos.css?v=20261116-2">
     <link rel="stylesheet" href="perguntas-frequentes.css?v=1">
     <link rel="stylesheet" href="preparacao-atendimento.css?v=1">
-    <link rel="stylesheet" href="editorial-home.css?v=20261116-7">
+    <link rel="stylesheet" href="editorial-home.css?v=20261116-8">
 </head>
 
 <body>
@@ -503,11 +503,9 @@
 
                 <p>
             Meu trabalho vai além da extensão de cílios. É sobre entender o que combina com você, respeitar a sua essência e criar um resultado que realce sua beleza sem deixar de ser você.
-
-Cada fio é escolhido e aplicado com precisão, cuidado e dedicação, para que você se sinta ainda mais bonita, confiante e especial ao se olhar no espelho.
-
-Porque quando você se sente bonita, algo dentro de você também se transforma.
                 </p>
+                <p>Cada fio é escolhido e aplicado com precisão, cuidado e dedicação, para que você se sinta ainda mais bonita, confiante e especial ao se olhar no espelho.</p>
+                <p>Porque quando você se sente bonita, algo dentro de você também se transforma.</p>
 
             </div>
 
@@ -686,6 +684,15 @@ Porque quando você se sente bonita, algo dentro de você também se transforma.
         document.body.classList.toggle('as-servicos-visiveis', entries[0].isIntersecting);
       }, {threshold: 0});
       observer.observe(secao);
+    })();
+    </script>
+    <script>
+    (() => {
+      const about = document.getElementById('sobre');
+      if (!about || !('IntersectionObserver' in window)) return;
+      new IntersectionObserver(entries => {
+        document.body.classList.toggle('as-sobre-visivel', entries[0].isIntersecting);
+      }, {threshold:0}).observe(about);
     })();
     </script>
     <script src="mobile-menu.js?v=20261116-1" defer></script>
