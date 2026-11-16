@@ -138,3 +138,17 @@ h2::after{background:#B9948A}
   #preparacao{padding-top:36px}
   body.as-duvidas-visiveis .whatsapp{display:none}
 }
+
+/* Etapa 8 aprovada: preparo para atendimento mais compacto no celular. */
+@media(max-width:600px){
+  #preparacao.as-preparo{padding-top:34px;padding-bottom:30px}
+  #preparacao .as-preparo-cabecalho{margin-bottom:24px}
+  #preparacao .as-preparo-cabecalho p{font-size:14px;line-height:1.65}
+  #preparacao .as-preparo-grid{gap:12px}
+  #preparacao .as-preparo-item{padding:20px 21px;border-radius:19px}
+  #preparacao .as-preparo-numero{width:37px;height:37px}
+  #preparacao .as-preparo-item h3{font-size:19px;line-height:1.35;margin:12px 0 8px}
+  #preparacao .as-preparo-item p{font-size:14px;line-height:1.65}
+  #preparacao .as-preparo-final{margin-top:25px}
+  #preparacao .as-preparo-final p{line-height:1.65;margin-bottom:19px}
+}
