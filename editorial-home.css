@@ -1,0 +1,54 @@
+/* Direcao visual aprovada: luxo minimalista + editorial sofisticado.
+   Somente apresentacao do site publico. Agenda e integracoes intactas. */
+:root{--dourado:#B9948A;--as-rose:#B9948A;--as-ink:#5A3A2D;--as-bg:#FAF8F4;--as-text:#6C5B55}
+body{background:#FAF8F4;color:var(--as-ink)}
+header{background:rgba(255,253,251,.97);padding:14px 6%;border-bottom:1px solid #eadbd6;box-shadow:0 3px 18px #5a3a2d0a}
+header .logo img{width:185px;height:64px}
+header nav{gap:26px}
+header nav a{font-size:13px;font-weight:500}
+header nav a:hover{color:#946d64}
+header nav a::after{background:#B9948A}
+header nav .as-header-book{background:#68483D;color:white;padding:13px 21px;border-radius:40px;white-space:nowrap}
+header nav .as-header-book:hover{background:#50372f;color:white}
+header nav .as-header-book::after{display:none}
+.banner{max-width:1440px;margin:0 auto;min-height:690px;padding:65px 7% 90px;gap:6vw;align-items:center}
+.texto-banner{min-width:0}
+.as-editorial-eyebrow{display:block;color:#A77F74;font-size:11px;letter-spacing:.22em;font-weight:600}
+.banner h1{font-size:clamp(42px,5vw,76px);line-height:1.13;letter-spacing:-.025em;font-weight:500;margin:24px 0;text-shadow:none}
+.banner p{font-size:16px;line-height:1.9;max-width:480px;color:#6C5B55}
+.banner .botao{margin-top:23px;padding:17px 32px}
+.botao{background:#68483D;color:#fff;box-shadow:0 8px 22px #5a3a2d19}
+.botao:hover{background:#50372f;box-shadow:0 10px 25px #5a3a2d24}
+.banner-imagem{min-width:0}
+.banner-imagem img{max-width:100%;max-height:640px;width:100%;object-fit:cover;border-radius:7px;box-shadow:0 18px 55px #5a3a2d1b}
+.banner-imagem img:hover{transform:none}
+h2::after{background:#B9948A}
+.beneficio i{color:#B9948A}
+.preco{color:#68483D}
+.card{border-color:#eadbd6}
+.cta .botao{background:#68483D!important}
+.cta .botao:hover{background:#50372f!important}
+::-webkit-scrollbar-thumb{background:#B9948A}
+::-webkit-scrollbar-thumb:hover{background:#946d64}
+@media(max-width:992px){
+  header{padding:12px 5%;min-height:76px}
+  header .logo img{width:155px;height:53px}
+  header nav{gap:0}
+  header nav .as-header-book{margin-top:12px;text-align:center;padding:14px 18px}
+  .banner{min-height:0;grid-template-columns:1fr;flex-direction:column;text-align:center;gap:36px;padding:54px 7% 65px}
+  .banner h1{font-size:clamp(36px,9vw,55px);line-height:1.16;margin:20px 0}
+  .banner p{font-size:15px;line-height:1.8;margin:0 auto}
+  .banner .botao{margin-top:23px}
+  .banner-imagem{max-width:520px;margin:0 auto}
+  .banner-imagem img{max-height:none;border-radius:7px}
+}
+@media(max-width:600px){
+  header{padding:10px 6%;min-height:70px}
+  header .logo img{width:155px;height:53px}
+  .banner{padding:45px 7% 60px;gap:32px}
+  .as-editorial-eyebrow{font-size:10px;letter-spacing:.17em}
+  .banner h1{font-size:clamp(36px,9vw,48px)}
+  .banner .botao{width:100%;max-width:410px;min-height:54px}
+  .banner-imagem img{border-radius:7px;box-shadow:0 14px 35px #5a3a2d1b}
+}
+@media(prefers-reduced-motion:reduce){.texto-banner,.banner-imagem{animation:none}}
