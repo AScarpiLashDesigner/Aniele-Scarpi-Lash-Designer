@@ -27,7 +27,7 @@
     <link rel="stylesheet" href="servicos-interativos.css?v=20261116-2">
     <link rel="stylesheet" href="perguntas-frequentes.css?v=1">
     <link rel="stylesheet" href="preparacao-atendimento.css?v=1">
-    <link rel="stylesheet" href="editorial-home.css?v=20261116-9">
+    <link rel="stylesheet" href="editorial-home.css?v=20261116-10">
 </head>
 
 <body>
@@ -681,6 +681,15 @@
       new IntersectionObserver(entries => {
         document.body.classList.toggle('as-sobre-visivel', entries[0].isIntersecting);
       }, {threshold:0}).observe(about);
+    })();
+    </script>
+    <script>
+    (() => {
+      const faq = document.getElementById('duvidas');
+      if (!faq || !('IntersectionObserver' in window)) return;
+      new IntersectionObserver(entries => {
+        document.body.classList.toggle('as-duvidas-visiveis', entries[0].isIntersecting);
+      }, {threshold:0}).observe(faq);
     })();
     </script>
     <script src="mobile-menu.js?v=20261116-1" defer></script>
