@@ -5,7 +5,7 @@ const details={
 "Fio a Fio":"Ideal para quem prefere um resultado discreto, com definição e aparência natural.",
 "Volume Brasileiro":"Uma opção para quem deseja destacar os olhos com mais volume e definição.",
 "Volume Egípcio":"Para quem gosta de um olhar mais marcante, com volume e presença.",
-"Volume Inglês":"Uma proposta de definição elegante com fios leves e delicados.",
+"Volume Inglês":"Proporciona volume intenso e maior preenchimento com fios tecnológicos 5D W, criando um olhar marcante e sofisticado.",
 "Volume Wispy":"Combina diferentes comprimentos para criar um acabamento texturizado e moderno.",
 "Volume Luxo":"Indicado para quem busca um visual mais intenso e cheio de destaque.",
 "Efeito Molhado":"Cria um acabamento definido com fios agrupados e efeito visual marcante.",
