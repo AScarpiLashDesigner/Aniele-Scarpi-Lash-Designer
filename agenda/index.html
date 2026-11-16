@@ -52,4 +52,6 @@ if(row.anamnese)for(const [k,v] of Object.entries(row.anamnese))add(labels[k]||k
 const a=document.createElement("a");a.className="as-link";a.href="./clientes.html?cliente="+encodeURIComponent(row.id);a.textContent="Editar ficha e enviar WhatsApp";actions.append(a);
 }catch(err){add("Erro ao consultar",err.message||"Tente novamente")}
 };
+</script><script>
+(function(){function install(){const nav=document.querySelector("nav");if(!nav||document.getElementById("as-online-requests"))return;const b=document.createElement("button");b.id="as-online-requests";b.type="button";b.textContent="✉ Solicitações online";b.onclick=()=>location.href="./solicitacoes.html";nav.append(b)}new MutationObserver(install).observe(document.getElementById("root"),{childList:true,subtree:true});install()})();
 </script><noscript>Ative o JavaScript para abrir a agenda.</noscript><script src="./config.js"></script><script type="module" src="./app.js?v=20261116-ficha1"></script><script src="./manutencoes.js?v=20261116-1" defer></script></body></html>
