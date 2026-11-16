@@ -182,3 +182,21 @@ footer .copyright{font-size:12px;line-height:1.5;margin-top:25px;padding-top:18p
   footer .redes a{font-size:23px}
   footer .copyright{margin-top:22px;padding-top:17px;font-size:11px}
 }
+
+/* Rodapé C: superminimalista, sem logo duplicada. */
+footer#contato{background:#2e201b}
+footer .footer-marca{display:flex;flex-direction:column;align-items:center;gap:3px;margin-bottom:13px}
+footer .footer-nome{font-family:"Cormorant Garamond","Playfair Display",Georgia,serif;font-size:32px;font-weight:500;line-height:1.1;color:#f4e7e0}
+footer .footer-profissao{font:500 10px/1.4 Poppins,sans-serif;letter-spacing:.23em;color:#c7a99f}
+footer .footer-assinatura{color:#e3d3cb}
+footer .footer-conteudo>p:not(.copyright):not(.footer-assinatura){color:#e3d3cb}
+footer .copyright{border-color:#59443c;color:#bda9a0!important}
+@media(max-width:600px){
+ footer#contato{padding:32px 7% 21px}
+ footer .footer-marca{margin-bottom:12px}
+ footer .footer-nome{font-size:31px}
+ footer .footer-profissao{font-size:9px}
+ footer .footer-assinatura{margin-bottom:9px}
+ footer .redes{margin:14px 0 8px}
+ footer .copyright{margin-top:17px;padding-top:15px}
+}
