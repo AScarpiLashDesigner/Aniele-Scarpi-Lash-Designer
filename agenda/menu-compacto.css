@@ -1,0 +1,19 @@
+/* Menu compacto da agenda: todos os atalhos visíveis sem rolagem horizontal. */
+@media (min-width:701px){
+.sidebar nav{gap:3px;min-width:0}
+.sidebar nav button{min-width:0;width:100%;padding:10px 11px;font-size:11px;line-height:1.3;white-space:normal;overflow-wrap:anywhere}
+.sidebar .brand{padding-bottom:22px}
+.sidebar .sidebar-label{margin-bottom:9px}
+}
+@media (max-width:700px){
+.sidebar{width:100%;max-width:100%;padding:12px 12px 10px}
+.sidebar .brand{padding-bottom:10px}
+.sidebar nav{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;width:100%;max-width:100%;overflow:visible!important}
+.sidebar nav button{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:3px;min-width:0;width:100%;min-height:45px;padding:7px 4px;border-radius:9px!important;font-size:10px;line-height:1.2;white-space:normal;overflow-wrap:anywhere;word-break:normal}
+.sidebar nav button svg{flex-shrink:0;width:14px;height:14px}
+.sidebar nav button.nav-active{border-radius:9px}
+}
+@media (max-width:370px){
+.sidebar nav{gap:4px}
+.sidebar nav button{font-size:9px;padding:6px 3px;min-height:43px}
+}
