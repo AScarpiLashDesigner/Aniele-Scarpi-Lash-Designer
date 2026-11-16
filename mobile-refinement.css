@@ -41,3 +41,22 @@
 }
 @media(min-width:993px){.as-menu-toggle{display:none}}
 @media(prefers-reduced-motion:reduce){header nav{transition:none}}
+
+/* Primeiro atendimento — identidade nude e marrom */
+.primeira-visita{background:#faf6f3;padding:88px 10%;color:#513a33}
+.primeira-visita-cabecalho{text-align:center;max-width:750px;margin:0 auto 42px}
+.primeira-visita-rotulo{display:block;font-size:12px;letter-spacing:3px;font-weight:600;color:#946d64;margin-bottom:14px}
+.primeira-visita h2{font-size:clamp(30px,4vw,44px);margin-bottom:24px}
+.primeira-visita h2::after{background:#b9948a}
+.primeira-visita-cabecalho p{font-size:16px;line-height:1.8;color:#6d5b56}
+.primeira-visita-etapas{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;max-width:1150px;margin:auto}
+.primeira-visita-card{background:#fff;border:1px solid #eddfd9;border-radius:18px;padding:27px 23px;box-shadow:0 8px 24px #593b3210}
+.primeira-visita-numero{font-family:'Playfair Display',serif;font-size:34px;color:#bd948b}
+.primeira-visita-card h3{font-family:'Playfair Display',serif;color:#5a3a2d;font-size:22px;margin:15px 0 12px}
+.primeira-visita-card p{color:#6d5b56;font-size:14px;line-height:1.75}
+.primeira-visita-cta{text-align:center;margin:38px auto 0}
+.primeira-visita-cta p{margin-bottom:18px;color:#6d5b56}
+.primeira-visita .botao{background:#68483d;box-shadow:0 10px 25px #68483d25}
+.primeira-visita .botao:hover{background:#4f342c}
+@media(max-width:992px){.primeira-visita{padding:65px 7%}.primeira-visita-etapas{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.primeira-visita{padding:58px 7%}.primeira-visita-cabecalho{margin-bottom:28px}.primeira-visita-cabecalho p{font-size:15px}.primeira-visita-etapas{grid-template-columns:1fr;gap:13px}.primeira-visita-card{padding:23px}.primeira-visita-card h3{margin:9px 0}.primeira-visita-cta .botao{width:100%;text-align:center}}
