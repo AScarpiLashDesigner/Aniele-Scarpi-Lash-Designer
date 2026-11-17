@@ -1,0 +1,36 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><meta name="robots" content="noindex,nofollow"><title>Cadastro e Anamnese | Aniele Scarpi</title><style>:root{font-family:Arial,sans-serif;color:#49352f;background:#faf8f6}*{box-sizing:border-box}body{margin:0}header{padding:25px 18px;text-align:center;background:#fff;border-bottom:1px solid #eaded8}header h1{font:28px Georgia,serif;margin:0}main{max-width:650px;margin:22px auto;padding:0 14px}.card{padding:23px;background:white;border:1px solid #eaded8;border-radius:15px}label{display:block;font-weight:600;margin:18px 0 6px}input,select,textarea{display:block;width:100%;padding:12px;border:1px solid #cdbcb4;border-radius:9px;font:inherit}textarea{min-height:80px}button{margin-top:20px;background:#68483d;color:white;padding:14px 22px;border:0;border-radius:9px;font-weight:bold;width:100%}button:disabled{opacity:.5}.muted{color:#756b67;font-size:14px}.error{color:#a52222}.success{color:#276b43}</style></head><body><header><h1>Aniele Scarpi</h1><div>Lash Designer · Cadastro e Anamnese</div></header><main><section class="card"><p>Preencha sua ficha com atenção. As informações são confidenciais e serão utilizadas para avaliar os cuidados necessários ao procedimento.</p><form id="form"><h2>Seus dados</h2><label for="nome">Nome completo *</label><input id="nome" name="nome" autocomplete="name" maxlength="160" minlength="3" required><label for="whatsapp">WhatsApp com DDD *</label><input id="whatsapp" name="whatsapp" type="tel" autocomplete="tel" maxlength="25" required placeholder="(35) 99999-9999"><label for="nascimento">Data de nascimento *</label><input id="nascimento" name="nascimento" type="date" autocomplete="bday" required><label for="instagram">Instagram (opcional)</label><input id="instagram" name="instagram" maxlength="100" placeholder="@seuperfil"><h2>Sua anamnese</h2></form><p id="status" role="status"></p><p class="muted">Seu cadastro será enviado diretamente ao estúdio. Para alterar uma ficha já enviada, entre em contato com a Aniele.</p></section></main><script src="./config.js"></script><script>
+const questions=[
+["ja_fez_extensao","Já fez extensão de cílios?","yes"],["ultimo_procedimento","Quando foi o último procedimento?","text"],
+["reacao_anterior","Já teve reação ou alergia após extensão?","yes"],["alergia_conhecida","Possui alergia conhecida?","yes"],["qual_alergia","Qual alergia?","text"],
+["lentes_contato","Usa lentes de contato?","yes"],["tratamento_medico","Está em tratamento médico?","yes"],
+["medicamento_continuo","Usa medicamentos contínuos?","yes"],["qual_medicamento","Qual medicamento?","text"],
+["gestante_amamentando","Está grávida ou amamentando?","yes"],["condicao_ocular","Possui condição ocular?","yes"],
+["qual_condicao","Qual condição ocular?","text"],["irritacao_ocular","Está com irritação, vermelhidão ou infecção nos olhos?","yes"],
+["cirurgia_ocular","Fez cirurgia ou procedimento ocular recentemente?","yes"],
+["observacoes_saude","Observações de saúde","textarea"],["informacoes_verdadeiras","Declaro que as informações prestadas são verdadeiras","yes"],
+["ciente_riscos","Estou ciente dos possíveis riscos e cuidados","yes"],["autoriza_procedimento","Autorizo a realização do procedimento","yes"],
+["autoriza_imagens","Autorizo o uso de imagens para divulgação (opcional)","yes"],["observacoes_adicionais","Observações adicionais","textarea"]];
+const form=document.getElementById("form"),status=document.getElementById("status");
+for(const [key,label,type] of questions){const l=document.createElement("label");l.textContent=label;l.htmlFor=key;let input;if(type==="yes"){input=document.createElement("select");for(const [v,t] of [["","Selecione"],["Sim","Sim"],["Não","Não"]]){const o=document.createElement("option");o.value=v;o.textContent=t;input.append(o)}}else if(type==="textarea"){input=document.createElement("textarea")}else{input=document.createElement("input");input.type="text";input.maxLength=500}input.name=key;input.id=key;form.append(l,input)}
+
+const consentLabel=document.createElement("label");consentLabel.style.fontWeight="normal";
+const consent=document.createElement("input");consent.type="checkbox";consent.required=true;consent.style.width="auto";consent.style.display="inline";consent.style.marginRight="8px";
+consentLabel.append(consent,document.createTextNode("Autorizo o uso dos meus dados pessoais e de saúde pelo estúdio para avaliar e organizar meu atendimento. As informações serão confidenciais."));
+form.append(consentLabel);
+const button=document.createElement("button");button.textContent="Enviar cadastro e anamnese";button.type="submit";form.append(button);
+document.getElementById("nascimento").max=new Date().toLocaleDateString("sv-SE");
+const submissionId=crypto.randomUUID();
+let sent=false;
+form.addEventListener("submit",async e=>{
+e.preventDefault();if(sent)return;
+const values=Object.fromEntries(new FormData(form));
+if(["informacoes_verdadeiras","ciente_riscos","autoriza_procedimento"].some(k=>values[k]!=="Sim")){status.className="error";status.textContent="Confirme as declarações e a autorização para enviar.";return}
+const {nome,whatsapp,nascimento,instagram,...answers}=values;
+button.disabled=true;status.className="muted";status.textContent="Enviando seu cadastro...";
+try{
+const r=await fetch(window.AS_AGENDA_CONFIG.url+"/functions/v1/cadastro-cliente",{method:"POST",headers:{"Content-Type":"application/json","apikey":window.AS_AGENDA_CONFIG.key},body:JSON.stringify({id:submissionId,nome,whatsapp,nascimento,instagram,answers,consentimento_dados:consent.checked})});
+const data=await r.json();if(!r.ok)throw Error(data.error||"Não foi possível enviar.");
+sent=true;form.hidden=true;status.className="success";status.textContent="Cadastro e anamnese enviados com sucesso! Obrigada. A Aniele já poderá consultar sua ficha. 💗";
+}catch(err){status.className="error";status.textContent=err.message||"Não foi possível enviar. Tente novamente.";button.disabled=false}
+});
+</script></body></html>
