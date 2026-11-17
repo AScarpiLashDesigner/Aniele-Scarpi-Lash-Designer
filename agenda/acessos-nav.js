@@ -2,6 +2,7 @@
   const root = document.getElementById('root');
   if (!root) return;
   function install() {
+    window.AS_SITE_PRIVACY?.excluded();
     const nav = root.querySelector('.sidebar nav');
     if (!nav || document.getElementById('as-acessos-nav')) return;
     const button = document.createElement('button');

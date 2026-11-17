@@ -3,6 +3,7 @@
   'use strict';
   const cfg = window.AS_AGENDA_CONFIG;
   if (!cfg?.url || !cfg?.key || !/^https?:$/.test(location.protocol)) return;
+  if (window.AS_SITE_PRIVACY?.excluded()) return;
   const pagina = /\/agendar\.html$/.test(location.pathname) ? 'agendamento' : 'inicio';
   function category(value) {
     const s = value.toLowerCase();
@@ -25,6 +26,7 @@
   }
   const origem = source();
   function send(evento) {
+    if (window.AS_SITE_PRIVACY?.excluded()) return;
     // Falhas na estatística nunca impedem navegar ou agendar.
     fetch(cfg.url + '/rest/v1/site_eventos', {
       method:'POST', headers:{apikey:cfg.key,'Content-Type':'application/json',Prefer:'return=minimal'},

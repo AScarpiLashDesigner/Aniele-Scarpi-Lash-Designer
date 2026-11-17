@@ -1,6 +1,21 @@
 import {ownerSession,ownerRequest,login,logout} from '../feedback-api.js?v=20261116-1';
 const $ = id => document.getElementById(id);
 let busy = false, generation = 0;
+function exclusionStatus() {
+  const excluded=window.AS_SITE_PRIVACY?.excluded();
+  $('exclusion-status').textContent=excluded?'Seus acessos e cliques neste navegador estão excluídos da contagem.':'Seus acessos neste navegador estão sendo contabilizados.';
+  $('exclusion-toggle').textContent=excluded?'Voltar a contabilizar neste navegador':'Excluir meus acessos neste navegador';
+}
+$('exclusion-toggle').onclick=()=>{
+  try {
+    const privacy=window.AS_SITE_PRIVACY;
+    if(!privacy)throw Error();
+    if(privacy.excluded())privacy.include();else privacy.exclude();
+    exclusionStatus();
+  } catch { $('exclusion-status').textContent='Não foi possível salvar a preferência. Verifique se o navegador permite armazenamento local.'; }
+};
+function ownerReady() { window.AS_SITE_PRIVACY?.rememberOwner(); exclusionStatus(); }
+
 function el(tag,text,parent,cls) { const n=document.createElement(tag); if(text!==undefined)n.textContent=text; if(cls)n.className=cls; if(parent)parent.append(n); return n; }
 function showLogin(message='Entre com seu login da agenda.') {
   generation++; $('login').hidden=false; $('panel').hidden=true; $('login-status').textContent=message;
@@ -33,7 +48,7 @@ async function load() {
   } catch(err) { if(current===generation){if(err.status===401||err.status===403)showLogin(err.message);else $('status').textContent=err.message;} }
   finally {busy=false;$('refresh').disabled=$('periodo').disabled=false;}
 }
-$('login-form').onsubmit=async e=>{e.preventDefault();const button=e.currentTarget.querySelector('button');button.disabled=true;$('login-status').textContent='Entrando…';try{await login($('email').value.trim(),$('password').value);$('password').value='';$('login').hidden=true;$('panel').hidden=false;await load();}catch(err){$('login-status').textContent='Não foi possível entrar. Confira seus dados e a conexão.';}finally{button.disabled=false;}};
+$('login-form').onsubmit=async e=>{e.preventDefault();const button=e.currentTarget.querySelector('button');button.disabled=true;$('login-status').textContent='Entrando…';try{await login($('email').value.trim(),$('password').value);ownerReady();$('password').value='';$('login').hidden=true;$('panel').hidden=false;await load();}catch(err){$('login-status').textContent='Não foi possível entrar. Confira seus dados e a conexão.';}finally{button.disabled=false;}};
 $('logout').onclick=async()=>{showLogin('Você saiu da conta.');await logout();};
 $('refresh').onclick=load;$('periodo').onchange=load;
-ownerSession().then(()=>{$('login').hidden=true;$('panel').hidden=false;return load();}).catch(err=>showLogin(err.message));
+ownerSession().then(()=>{ownerReady();$('login').hidden=true;$('panel').hidden=false;return load();}).catch(err=>showLogin(err.message));
