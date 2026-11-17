@@ -4,7 +4,7 @@
   overlay.id = 'as-free-overlay';
   overlay.innerHTML = `<section id="as-free-dialog" role="dialog" aria-modal="true" aria-labelledby="as-free-title" tabindex="-1">
     <div class="as-free-top"><div><p class="as-free-eyebrow">ANIELE SCARPI · DIVULGAÇÃO</p><h2 id="as-free-title">Sua agenda no Instagram</h2></div><button type="button" id="as-free-close" aria-label="Fechar">✕</button></div>
-    <p class="as-free-note">Selecione as vagas que quer divulgar. Atendimentos de 2 horas, a partir das 08h, com último início às 20h e almoço das 12h às 13h.</p>
+    <p class="as-free-note">Selecione as vagas que quer divulgar. Inícios a cada 30 minutos. Atendimentos de 2 horas, a partir das 08h, com último início às 20h e almoço das 12h às 13h.</p>
     <div class="as-free-toolbar"><label>Semana a partir de<input id="as-free-start" type="date" required></label><button type="button" id="as-free-reload">Atualizar horários</button></div>
     <p id="as-free-status" role="status" aria-live="polite"></p>
     <div class="as-free-layout"><div><h3>1. Escolha os horários</h3><div class="as-free-actions"><button type="button" id="as-free-all">Selecionar todos</button><button type="button" id="as-free-clear">Limpar seleção</button></div><p class="as-free-note">Cada horário é uma opção de início. As vagas podem se sobrepor; a reserva é confirmada pela agenda.</p><div id="as-free-results"></div></div>
@@ -25,7 +25,7 @@
     const busy=appointments.filter(a=>a.date===date&&!['Cancelado','Não compareceu'].includes(a.status)).map(a=>({start:minutes(a.time),end:minutes(a.time)+(Number(a.duration)||120)})).filter(a=>Number.isFinite(a.start));
     const free=[], now=new Date(), today=iso(now);
     const parts=new Intl.DateTimeFormat('en-GB',{timeZone:'America/Sao_Paulo',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(now);
-    for(let start=480;start<=1200;start+=60) {
+    for(let start=480;start<=1200;start+=30) {
       const end=start+120;
       if(date<today||date===today&&start<=minutes(parts)||start<780&&end>720||busy.some(a=>start<a.end&&end>a.start))continue;
       free.push(hh(start));
@@ -205,3 +205,4 @@
   // The legacy Instagram card opens this same editor rather than the old text-only dialog.
   document.addEventListener('click',e=>{const button=e.target.closest('button');if(button&&button.closest('.instagram-card')){e.preventDefault();e.stopImmediatePropagation();window.AS_openHorariosLivres();}},true);
 })();
+

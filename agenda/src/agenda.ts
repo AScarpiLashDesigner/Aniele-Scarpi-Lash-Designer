@@ -17,11 +17,12 @@ export function weekly(s:State,start:string,client=''){
  const last=s.clients.map(c=>completed.filter(a=>a.clientId===c.id).sort((a,b)=>(b.date+b.time).localeCompare(a.date+a.time))[0]).filter(Boolean);
  const maintenance=last.filter(a=>inWeek(due(a,s))&&(!client||a.clientId===client)).map(a=>({...a,due:due(a,s),scheduled:s.appointments.some(b=>b.clientId===a.clientId&&active(b)&&b.status!=='Realizado'&&b.date>=today()&&b.date>a.date)}));
  const slots:{date:string;start:string;end:string}[]=[];
- for(let i=0;i<7;i++) {const date=addDays(start,i);const windows=s.windows.filter(w=>w.date===date).map(w=>[minutes(w.start),minutes(w.end)]).sort((a,b)=>a[0]-b[0]);const merged:number[][]=[];for(const w of windows){const p=merged.at(-1);if(p&&w[0]<=p[1])p[1]=Math.max(p[1],w[1]);else merged.push([...w]);}
- for(const [begin,end] of merged){let t=begin;while(t+s.slot<=end){const overlap=s.appointments.filter(a=>a.date===date&&active(a)&&minutes(a.time)<t+s.slot&&minutes(a.time)+a.duration>t).sort((a,b)=>minutes(a.time)-minutes(b.time))[0];if(overlap){t=minutes(overlap.time)+overlap.duration;continue;}slots.push({date,start:clock(t),end:clock(t+s.slot)});t+=s.slot;}}}
+ for(let i=0;i<7;i++) {const date=addDays(start,i);
+ for(let t=480;t<=1200;t+=30){if(t<780&&t+120>720)continue;if(s.appointments.some(a=>a.date===date&&active(a)&&minutes(a.time)<t+120&&minutes(a.time)+(Number(a.duration)||120)>t))continue;slots.push({date,start:clock(t),end:clock(t+120)});}}
  const now=new Intl.DateTimeFormat('en-GB',{timeZone:'America/Sao_Paulo',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date());
  return {start,end,appointments,maintenance,slots:slots.filter(x=>x.date>today()||(x.date===today()&&x.start>now))};
 }
 
 export function maintenanceFollowup(a:Appointment,s:State){return s.appointments.filter(b=>b.maintenanceOf===a.id&&['Agendado','Confirmado','Realizado'].includes(b.status)).sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time))[0]}
 export function maintenanceDraft(a:Appointment,s:State){return {clientId:a.clientId,date:due(a,s),technique:'Manutenção',duration:s.slot,pending:true,days:0,maintenance:'',notes:'',status:'Agendado',maintenanceOf:a.id}}
+
