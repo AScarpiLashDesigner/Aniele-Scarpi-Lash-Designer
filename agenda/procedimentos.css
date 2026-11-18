@@ -1,0 +1,72 @@
+.as-procedure-history {
+  border-top: 1px solid #e9d9d8;
+  margin-top: 20px;
+  padding-top: 18px;
+}
+
+.as-procedure-card {
+  background: #fff;
+  border: 1px solid #ebdfe0;
+  border-radius: 10px;
+  margin: 12px 0;
+  padding: 13px;
+  overflow-wrap: anywhere;
+}
+
+.as-procedure-details {
+  border-top: 1px solid #ebdfe0;
+  margin-top: 12px;
+  padding-top: 12px;
+}
+
+.as-procedure-details summary {
+  color: #67483e;
+  cursor: pointer;
+  font-weight: 650;
+}
+
+.as-procedure-form fieldset {
+  min-width: 0;
+  margin: 8px 0 0;
+  padding: 0;
+  border: 0;
+}
+
+.as-procedure-form label {
+  display: block;
+  margin-top: 10px;
+  font-weight: 600;
+}
+
+.as-procedure-form input {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  margin-top: 5px;
+  padding: 9px;
+  border: 1px solid #d8c6c3;
+  border-radius: 8px;
+  background: #fff;
+  color: #3f3032;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.as-procedure-form img {
+  display: block;
+  max-width: 100%;
+  max-height: 360px;
+  object-fit: contain;
+  margin-top: 10px;
+  border-radius: 8px;
+}
+
+.as-procedure-form button {
+  margin: 10px 8px 0 0;
+}
+
+.as-procedure-form :is(img, button)[hidden] {
+  display: none !important;
+}
