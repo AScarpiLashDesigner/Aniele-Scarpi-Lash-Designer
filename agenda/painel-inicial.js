@@ -1,7 +1,7 @@
 (function(){"use strict";
 const panel=document.createElement("section");panel.id="as-home";panel.setAttribute("aria-label","Resumo inteligente do estúdio");
 panel.innerHTML='<div class="head"><div><p class="caption">ANIELE SCARPI · LASH DESIGNER</p><h2>Meu estúdio hoje</h2></div><button type="button" id="as-home-refresh">↻ Atualizar</button></div><div class="grid" id="as-home-grid"></div><p id="as-home-status" role="status">Aguardando login na agenda…</p><div class="actions"><button type="button" id="as-home-new-client">＋ Nova cliente</button><button type="button" id="as-home-new-appointment">＋ Novo atendimento</button><button type="button" id="as-home-slots">◷ Horários livres</button><a href="./solicitacoes.html">Solicitações online</a></div>';
-const grid=panel.querySelector("#as-home-grid"),status=panel.querySelector("#as-home-status");let lastLoad=0,busy=false;
+const grid=panel.querySelector("#as-home-grid"),status=panel.querySelector("#as-home-status");let lastLoad=0,busy=false,refreshRequested=false;
 const cards=[["Atendimentos de hoje","Agendados para hoje"],["Próximas manutenções","Vencidas ou até 7 dias"],["Clientes aguardando contato","Realizados há 1–30 dias"],["Solicitações pendentes","Aguardando aprovação"]];
 function show(values){grid.replaceChildren();cards.forEach(([title,note],i)=>{const c=document.createElement("div");c.className="tile";if(i===3&&Number(values?.[i])>0){c.classList.add("as-pending-alert");c.style.border="2px solid #c9957f";c.style.background="#fff3ed";c.style.cursor="pointer";c.title="Abrir solicitações pendentes";c.setAttribute("role","link");c.tabIndex=0;c.onclick=()=>location.href="./solicitacoes.html";c.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();location.href="./solicitacoes.html"}}}const label=document.createElement("span");label.textContent=title;const number=document.createElement("strong");number.textContent=values?.[i]??"—";const sub=document.createElement("small");sub.textContent=note;c.append(label,number,sub);grid.append(c)})}
 function date(s){const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(String(s||""));return m?new Date(+m[1],+m[2]-1,+m[3],12):null}
@@ -34,7 +34,17 @@ return !booked&&delta<=7
 }).length;
 const pending=apps.filter(a=>a.status==="Realizado"&&date(a.date)&&difference(today,date(a.date))>=1&&difference(today,date(a.date))<=30&&!contact.get(String(a.id))?.acompanhamento_enviado_em).length;
 show([todayApps,due,pending,requests.length]);status.textContent="Atualizado às "+new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})+" · Informações privadas do Supabase.";lastLoad=Date.now();
-}catch(e){show(null);status.textContent=e.message||"Erro ao carregar indicadores."}finally{busy=false}}
+}catch(e){show(null);status.textContent=e.message||"Erro ao carregar indicadores."}finally{
+  busy=false;
+  if(refreshRequested){
+    refreshRequested=false;
+    load();
+  }
+}}
+window.addEventListener("agenda-appointment-completed",()=>{
+  if(busy)refreshRequested=true;
+  else load();
+});
 panel.querySelector("#as-home-refresh").onclick=()=>{lastLoad=0;load()};
 panel.querySelector("#as-home-new-client").onclick=()=>{location.href="./clientes.html"};
 panel.querySelector("#as-home-new-appointment").onclick=()=>{document.querySelector(".content .title-row button.primary")?.click()};
