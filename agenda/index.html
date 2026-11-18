@@ -1,4 +1,4 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="description" content="Agenda privada do estúdio Aniele Scarpi Lash Designer"><title>Agenda | Aniele Scarpi</title><link rel="stylesheet" href="./app.css"><link rel="stylesheet" href="./menu-compacto.css?v=20261116-1"><link rel="stylesheet" href="./painel-inicial.css?v=20261116-1"><link rel="stylesheet" href="./inicio-organizado.css?v=20261116-1"><link rel="stylesheet" href="./horarios-livres.css?v=20261116-floral1"></head><body><div id="root"></div><script>
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="description" content="Agenda privada do estúdio Aniele Scarpi Lash Designer"><title>Agenda | Aniele Scarpi</title><link rel="stylesheet" href="./app.css"><link rel="stylesheet" href="./menu-compacto.css?v=20261116-1"><link rel="stylesheet" href="./painel-inicial.css?v=20261116-1"><link rel="stylesheet" href="./inicio-organizado.css?v=20261116-1"><link rel="stylesheet" href="./horarios-livres.css?v=20261116-floral1"><link rel="stylesheet" href="./procedimentos.css?v=1"></head><body><div id="root"></div><script>
 document.addEventListener("click",function(event){
 const button=event.target.closest("button");
 if(!button)return;
@@ -12,45 +12,53 @@ window.location.href="./clientes.html";
 #as-ficha-backdrop{position:fixed;inset:0;background:#25191bcc;z-index:9998;display:none;align-items:center;justify-content:center;padding:14px}
 #as-ficha-backdrop.visible{display:flex}#as-ficha-dialog{background:#fffaf9;color:#3f3032;border-radius:16px;max-width:610px;width:100%;max-height:90vh;overflow:auto;padding:25px;box-shadow:0 12px 40px #0004}
 #as-ficha-dialog h2{margin:0 0 15px;font-family:Georgia,serif}#as-ficha-dialog p{margin:9px 0;line-height:1.55;overflow-wrap:anywhere}#as-ficha-dialog button,#as-ficha-dialog a.as-link{display:inline-block;padding:11px 14px;border-radius:8px;background:#67483e;color:white;text-decoration:none;margin:10px 8px 0 0}
-</style><div id="as-ficha-backdrop"><section id="as-ficha-dialog" role="dialog" aria-modal="true" aria-label="Ficha da cliente"><button id="as-ficha-close" type="button">Fechar</button><h2>Ficha da cliente</h2><div id="as-ficha-content"></div><div id="as-ficha-actions"></div></section></div>
+</style><div id="as-ficha-backdrop"><section id="as-ficha-dialog" role="dialog" aria-modal="true" aria-label="Ficha da cliente"><button id="as-ficha-close" type="button">Fechar</button><h2>Ficha da cliente</h2><div id="as-ficha-content"></div><div id="as-ficha-history"></div><div id="as-ficha-anamnese"></div><div id="as-ficha-actions"></div></section></div>
 <script type="module">
 import {createClient} from "https://esm.sh/@supabase/supabase-js@2.57.0";
+import {showProcedureHistory} from "./procedimentos.js?v=1";
 const cfg=window.AS_AGENDA_CONFIG;
-const db=createClient(cfg.url,cfg.key,{auth:{persistSession:true,autoRefreshToken:true,storageKey:"as-agenda-auth-token"}});
+function agendaSession(){
+  try{return JSON.parse(sessionStorage.getItem("as-agenda-session-v1")||"null")}
+  catch{return null}
+}
+const db=createClient(cfg.url,cfg.key,{accessToken:async()=>agendaSession()?.access_token||null});
 const backdrop=document.getElementById("as-ficha-backdrop"),content=document.getElementById("as-ficha-content"),actions=document.getElementById("as-ficha-actions");
-function add(label,value){const p=document.createElement("p"),b=document.createElement("strong");b.textContent=label+": ";p.append(b,document.createTextNode(value==null||value===""?"Não informado":String(value)));content.append(p)}
-function close(){backdrop.classList.remove("visible")}
+const history=document.getElementById("as-ficha-history"), anam=document.getElementById("as-ficha-anamnese");
+let fichaRequest=0;
+function add(label,value,target=content){const p=document.createElement("p"),b=document.createElement("strong");b.textContent=label+": ";p.append(b,document.createTextNode(value==null||value===""?"Não informado":String(value)));target.append(p);return p}
+function close(){fichaRequest++;backdrop.classList.remove("visible");history.replaceChildren();anam.replaceChildren();content.replaceChildren();actions.replaceChildren()}
+window.addEventListener("agenda-session-expired",close);
 document.getElementById("as-ficha-close").onclick=close;backdrop.addEventListener("click",e=>{if(e.target===backdrop)close()});
 const labels={ja_fez_extensao:"Já fez extensão",ultimo_procedimento:"Último procedimento",reacao_anterior:"Reação anterior",alergia_conhecida:"Alergia conhecida",qual_alergia:"Qual alergia",lentes_contato:"Lentes de contato",tratamento_medico:"Tratamento médico",medicamento_continuo:"Medicamento contínuo",qual_medicamento:"Qual medicamento",gestante_amamentando:"Grávida ou amamentando",condicao_ocular:"Condição ocular",qual_condicao:"Qual condição",irritacao_ocular:"Irritação ocular",cirurgia_ocular:"Cirurgia ocular recente",observacoes_saude:"Observações de saúde",informacoes_verdadeiras:"Declaração de veracidade",ciente_riscos:"Ciência dos riscos",autoriza_procedimento:"Autorização do procedimento",autoriza_imagens:"Autorização de imagens",observacoes_adicionais:"Observações adicionais"};
 
-function formatDate(value){if(!/^\d{4}-\d{2}-\d{2}$/.test(String(value||"")))return value||"Não informado";const [y,m,d]=value.split("-");return d+"/"+m+"/"+y}
-function plusDays(date,days){if(!/^\d{4}-\d{2}-\d{2}$/.test(String(date||"")))return null;const d=new Date(date+"T12:00:00Z");d.setUTCDate(d.getUTCDate()+Number(days||21));return d.toISOString().slice(0,10)}
-async function showHistory(client,user){
-const section=document.createElement("section");section.style.cssText="border-top:1px solid #e9d9d8;margin-top:20px;padding-top:18px";const title=document.createElement("h2");title.textContent="Histórico de procedimentos";section.append(title);content.append(section);
-const {data,error}=await db.from("agenda_studio").select("data").eq("owner_id",user.id).maybeSingle();if(error)throw error;
-const raw=data?.data||{};const agenda=typeof raw==="string"?JSON.parse(raw):raw;const clients=Array.isArray(agenda.clients)?agenda.clients:[];const same=clients.filter(c=>c.id===client.id||String(c.phone||"").replace(/\D/g,"")===String(client.phone||"").replace(/\D/g,"")&&String(client.phone||"").replace(/\D/g,"").length>=10);const ids=new Set([client.id,...same.map(c=>c.id)]);
-const list=(Array.isArray(agenda.appointments)?agenda.appointments:[]).filter(a=>ids.has(a.clientId)).sort((a,b)=>String(b.date||"").localeCompare(String(a.date||""))||String(b.time||"").localeCompare(String(a.time||"")));
-if(!list.length){const p=document.createElement("p");p.textContent="Nenhum procedimento registrado para esta cliente.";section.append(p);return}
-const count=document.createElement("p");count.textContent=list.length+" atendimento(s) registrado(s)";section.append(count);
-for(const a of list){const card=document.createElement("div");card.style.cssText="background:#fff;border:1px solid #ebdfe0;border-radius:10px;padding:13px;margin:12px 0";const heading=document.createElement("strong");heading.textContent=formatDate(a.date)+" · "+(a.time||"Horário não informado");card.append(heading);function field(label,value){const p=document.createElement("p");p.style.margin="6px 0";const b=document.createElement("strong");b.textContent=label+": ";p.append(b,document.createTextNode(String(value??"Não informado")));card.append(p)}
-field("Técnica",a.technique||"Não informada");field("Status",a.status||"Não informado");if(a.duration)field("Duração",a.duration+" minutos");if(a.notes)field("Observações",a.notes);if(a.maintenanceOf)field("Manutenção de",formatDate(a.maintenanceOf));const days=Number(a.days)||Number(client.days)||21;
-if(a.status==="Realizado")field("Próxima manutenção prevista",formatDate(plusDays(a.date,days)));else if(a.maintenance)field("Manutenção",a.maintenance);
-section.append(card)}
-}
 window.AS_openFicha=async function(client){
-content.replaceChildren();actions.replaceChildren();backdrop.classList.add("visible");add("Nome",client.name);add("WhatsApp",client.phone);add("Prazo de manutenção",client.days+" dias");add("Observações da agenda",client.notes);add("Anamnese","Carregando...");
+close();
+const request=fichaRequest;
+backdrop.classList.add("visible");
+add("Nome",client.name);add("WhatsApp",client.phone);add("Prazo de manutenção",client.days+" dias");add("Observações da agenda",client.notes);
+const loading=add("Anamnese","Carregando...",anam);
 try{
-const {data:{user}}=await db.auth.getUser();if(!user)throw Error("Entre na agenda novamente.");
+const session=agendaSession();
+const user=session?.user;
+if(!user?.id||!session.access_token)throw Error("Entre na agenda novamente.");
+void showProcedureHistory(db,history,client,user);
 const digits=v=>String(v||"").replace(/\D/g,"");
 const {data,error}=await db.from("clientes_studio").select("id,nome,whatsapp,nascimento,instagram,tecnica_desejada,observacoes_internas,anamnese,anamnese_at").eq("owner_id",user.id);
+if(request!==fichaRequest)return;
 if(error)throw error;
-const row=(data||[]).find(r=>r.id===client.id||(digits(r.whatsapp).length>=10&&digits(r.whatsapp)===digits(client.phone)));
-content.lastChild.remove();
-if(!row){await showHistory(client,user);add("Anamnese","Ainda não cadastrada na ficha digital.");const a=document.createElement("a");a.className="as-link";a.href="./clientes.html";a.textContent="Completar cadastro e anamnese";actions.append(a);return}
-add("Nascimento",row.nascimento);add("Instagram",row.instagram);add("Técnica desejada",row.tecnica_desejada);add("Observações internas",row.observacoes_internas);add("Anamnese",row.anamnese_at?"Preenchida":"Pendente");
-if(row.anamnese)for(const [k,v] of Object.entries(row.anamnese))add(labels[k]||k,v);await showHistory(client,user);
-const a=document.createElement("a");a.className="as-link";a.href="./clientes.html?cliente="+encodeURIComponent(row.id);a.textContent="Editar ficha e enviar WhatsApp";actions.append(a);
-}catch(err){add("Erro ao consultar",err.message||"Tente novamente")}
+const rows=data||[];
+const matches=rows.filter(r=>digits(r.whatsapp).length>=10&&digits(r.whatsapp)===digits(client.phone));
+const row=rows.find(r=>r.id===client.id)||(matches.length===1?matches[0]:null);
+loading.remove();
+const a=document.createElement("a");a.className="as-link";
+if(!row){
+add("Anamnese","Ainda não cadastrada na ficha digital.",anam);
+a.href="./clientes.html";a.textContent="Completar cadastro e anamnese";actions.append(a);return;
+}
+add("Nascimento",row.nascimento);add("Instagram",row.instagram);add("Técnica desejada",row.tecnica_desejada);add("Observações internas",row.observacoes_internas);add("Anamnese",row.anamnese_at?"Preenchida":"Pendente",anam);
+if(row.anamnese)for(const [k,v] of Object.entries(row.anamnese))add(labels[k]||k,v,anam);
+a.href="./clientes.html?cliente="+encodeURIComponent(row.id);a.textContent="Editar ficha e enviar WhatsApp";actions.append(a);
+}catch(err){if(request===fichaRequest){loading.remove();add("Erro ao consultar",err.message||"Tente novamente",anam)}}
 };
 </script><script>
 (function(){function install(){const nav=document.querySelector("nav");if(!nav||document.getElementById("as-online-requests"))return;const b=document.createElement("button");b.id="as-online-requests";b.type="button";b.textContent="✉ Solicitações online";b.onclick=()=>location.href="./solicitacoes.html";nav.append(b)}new MutationObserver(install).observe(document.getElementById("root"),{childList:true,subtree:true});install()})();
