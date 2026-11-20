@@ -1,6 +1,45 @@
 <!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Financeiro | Aniele Scarpi</title><style>
-*{box-sizing:border-box}body{margin:0;background:#faf7f6;color:#49352f;font:15px/1.5 Arial,sans-serif}header{background:white;border-bottom:1px solid #eadbd5;padding:17px 5%;display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}main{max-width:1050px;margin:26px auto;padding:0 16px}h1{font:32px Georgia,serif;margin:5px 0 8px}h2{font:22px Georgia,serif}a{color:#68483d}button{border:0;border-radius:9px;padding:10px 15px;background:#68483d;color:white;cursor:pointer}button:disabled{opacity:.55}input,select{padding:10px;border:1px solid #d7c3bb;border-radius:8px;background:#fff;color:#49352f;max-width:100%}.muted{color:#786862}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin:20px 0}.metric{padding:17px;border:1px solid #eadbd5;background:#f5ebe7;border-radius:13px}.metric strong{display:block;font:27px Georgia,serif;margin-top:6px}.item{background:#fff;border:1px solid #eadbd5;border-radius:13px;padding:16px;margin:12px 0}.item h3{margin:0 0 5px}.fields{display:flex;gap:10px;align-items:end;flex-wrap:wrap}.fields label{display:flex;flex-direction:column;gap:5px;font-size:13px}.fields input[type=number]{width:130px}.status{font-size:13px;min-height:18px}.error{color:#a32828}.success{color:#286445}.filters{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.note{font-size:13px;color:#75665f}#items{margin-bottom:35px}
-</style></head><body><header><strong>Aniele Scarpi | Financeiro</strong><a href="./">Voltar à agenda</a></header><main><h1>Controle financeiro</h1><p class="muted">O valor informado na agenda aparece aqui como pendente após a confirmação. Ao receber, marque como pago e informe a data do pagamento.</p><div class="filters"><label>Mês: <input id="month" type="month"></label><button id="refresh">Atualizar</button></div><p id="status" role="status"></p><div id="summary" class="cards"></div><h2>Atendimentos do mês</h2><p class="note">Parcerias são trocas de serviços: não entram como dinheiro recebido nem como pagamento pendente. O valor é opcional para parcerias. Marque como pago apenas após receber. Os totais consideram atendimentos realizados; o recebimento é atribuído ao mês da data do pagamento.</p><div id="items"></div></main><script src="./config.js"></script><script>
+*{box-sizing:border-box}body{margin:0;background:#faf7f6;color:#49352f;font:15px/1.5 Arial,sans-serif}header{background:white;border-bottom:1px solid #eadbd5;padding:17px 5%;display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}main{max-width:1050px;margin:26px auto;padding:0 16px}h1{font:32px Georgia,serif;margin:5px 0 8px}h2{font:22px Georgia,serif}a{color:#68483d}button{border:0;border-radius:9px;padding:10px 15px;background:#68483d;color:white;cursor:pointer}button:disabled{opacity:.55}input,select{padding:10px;border:1px solid #d7c3bb;border-radius:8px;background:#fff;color:#49352f;max-width:100%}.muted{color:#786862}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin:20px 0}.metric{padding:17px;border:1px solid #eadbd5;background:#f5ebe7;border-radius:13px}.metric strong{display:block;font:27px Georgia,serif;margin-top:6px}.entries{list-style:none;margin:0;padding:0;background:#fff;border:1px solid #eadbd5;border-radius:13px}
+.item{display:grid;grid-template-columns:minmax(0,1fr) minmax(105px,auto) auto;gap:12px 20px;align-items:center;padding:13px 16px;overflow-wrap:anywhere}
+.item+.item{border-top:1px solid #eadbd5}
+.item h3,.item p{margin:0}
+.item h3{font-size:16px}
+.item p{font-size:14px}
+.entry-payment strong{display:block}
+.item button{justify-self:start}
+dialog{width:min(92%,420px);max-height:90vh;padding:22px;border:1px solid #eadbd5;border-radius:13px;background:#fff;color:#49352f}
+dialog::backdrop{background:#25191b80}
+dialog h2{margin:0 0 8px}
+.fields{display:grid;gap:12px;margin:14px 0}
+.fields label{display:grid;gap:4px}
+.fields label[hidden]{display:none}
+.dialog-actions{display:flex;gap:8px;flex-wrap:wrap}
+.secondary{background:#f5ebe7;color:#49352f}
+@media(max-width:540px){.item{grid-template-columns:minmax(0,1fr) auto}.entry-details{grid-column:1/-1}}.error{color:#a32828}.success{color:#286445}.filters{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.note{font-size:13px;color:#75665f}#items{margin-bottom:35px}
+</style></head><body><header><strong>Aniele Scarpi | Financeiro</strong><a href="./">Voltar à agenda</a></header><main><h1>Controle financeiro</h1><p class="muted">O valor informado na agenda aparece aqui como pendente após a confirmação. Ao receber, marque como pago e informe a data do pagamento.</p><div class="filters"><label>Mês: <input id="month" type="month"></label><button id="refresh">Atualizar</button></div><p id="status" role="status"></p><div id="summary" class="cards"></div><h2>Atendimentos do mês</h2><p class="note">Parcerias são trocas de serviços: não entram como dinheiro recebido nem como pagamento pendente. O valor é opcional para parcerias. Marque como pago apenas após receber. Os totais consideram atendimentos realizados; o recebimento é atribuído ao mês da data do pagamento.</p><div id="items"></div></main>
+<dialog id="editor" aria-labelledby="editor-title">
+  <h2 id="editor-title">Editar lançamento</h2>
+  <p id="editor-appointment" class="muted"></p>
+  <form id="payment-form">
+    <div class="fields">
+      <label>Valor cobrado (R$)<input id="value" type="number" min="0" max="99999.99" step="0.01" inputmode="decimal" autofocus></label>
+      <label>Pagamento
+        <select id="payment-status">
+          <option value="pendente">Pendente</option>
+          <option value="pago">Pago</option>
+          <option value="parceria">Parceria · troca de serviços</option>
+        </select>
+      </label>
+      <label id="payment-date-label">Data do pagamento<input id="payment-date" type="date"></label>
+    </div>
+    <p id="editor-status" role="status"></p>
+    <div class="dialog-actions">
+      <button type="submit" id="save-payment">Salvar registro</button>
+      <button type="button" id="cancel-edit" class="secondary">Cancelar</button>
+    </div>
+  </form>
+</dialog>
+<script src="./config.js"></script><script>
 "use strict";
 const cfg=window.AS_AGENDA_CONFIG,month=document.getElementById("month"),statusEl=document.getElementById("status"),itemsEl=document.getElementById("items"),summary=document.getElementById("summary");let appointments=[],clients=[],payments=[],owner="";
 function session(){try{return JSON.parse(sessionStorage.getItem("as-agenda-session-v1")||"null")}catch{return null}}
@@ -8,7 +47,141 @@ async function api(path,opts={}){const s=session();if(!s?.access_token||!s?.user
 const money=n=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(n||0);const dateBR=s=>/^\d{4}-\d{2}-\d{2}$/.test(s||"")?s.split("-").reverse().join("/"):"—";const isoToday=()=>{const d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-")};
 function el(tag,text,parent,cls){const x=document.createElement(tag);if(text!==undefined)x.textContent=text;if(cls)x.className=cls;if(parent)parent.append(x);return x}
 function metric(label,value){const card=el("div",undefined,summary,"metric");el("span",label,card);el("strong",value,card)}
-async function load(){statusEl.className="";statusEl.textContent="Carregando dados...";try{const s=session();if(!s?.user?.id)throw Error("Entre primeiro na agenda principal.");owner=s.user.id;const [a,p]=await Promise.all([api("agenda_studio?owner_id=eq."+encodeURIComponent(owner)+"&select=data"),api("pagamentos_studio?owner_id=eq."+encodeURIComponent(owner)+"&select=appointment_id,valor,status,pago_em&limit=10000")]);if(!a.length)throw Error("Agenda não encontrada.");let data=a[0].data||{};if(typeof data==="string")data=JSON.parse(data);appointments=Array.isArray(data.appointments)?data.appointments:[];clients=Array.isArray(data.clients)?data.clients:[];payments=p||[];statusEl.textContent="";render()}catch(e){statusEl.className="error";statusEl.textContent=e.message||"Erro ao carregar.";itemsEl.replaceChildren();summary.replaceChildren()}}
-function render(){itemsEl.replaceChildren();summary.replaceChildren();const m=month.value;const map=new Map(payments.map(p=>[String(p.appointment_id),p]));const completed=appointments.filter(a=>a.status==="Realizado");const monthly=completed.filter(a=>String(a.date||"").slice(0,7)===m);const recorded=monthly.map(a=>map.get(String(a.id))).filter(p=>p&&p.status!=="parceria"&&p.valor!==null&&p.valor!==undefined);const partnerships=monthly.filter(a=>map.get(String(a.id))?.status==="parceria").length;const billed=recorded.reduce((n,p)=>n+Number(p.valor),0);const pending=recorded.filter(p=>p.status!=="pago").reduce((n,p)=>n+Number(p.valor),0);const received=completed.map(a=>map.get(String(a.id))).filter(p=>p&&p.status==="pago"&&String(p.pago_em||"").slice(0,7)===m).reduce((n,p)=>n+Number(p.valor||0),0);metric("Valor registrado em atendimentos realizados",money(billed));metric("Recebido no mês",money(received));metric("Pendente dos atendimentos do mês",money(pending));metric("Parcerias realizadas",String(partnerships));metric("Atendimentos sem valor informado",String(monthly.length-recorded.length-partnerships));const rows=appointments.filter(a=>String(a.date||"").slice(0,7)===m&&a.status!=="Cancelado").sort((a,b)=>String(a.date).localeCompare(String(b.date))||String(a.time||"").localeCompare(String(b.time||"")));if(!rows.length){el("p","Nenhum atendimento encontrado para este mês.",itemsEl);return}for(const a of rows){const card=el("article",undefined,itemsEl,"item");const client=clients.find(c=>String(c.id)===String(a.clientId));el("h3",(client?.name||"Cliente não identificada")+" · "+dateBR(a.date),card);el("p",(a.time||"")+" · "+(a.technique||"Técnica não informada")+" · "+a.status,card,"muted");const p=map.get(String(a.id));const fields=el("div",undefined,card,"fields");const valueLabel=el("label","Valor cobrado (R$)",fields);const value=el("input",undefined,valueLabel);value.type="number";value.min="0";value.step="0.01";value.placeholder="Ex.: 100,00";value.value=p?.valor==null?"":String(p.valor);const statusLabel=el("label","Pagamento",fields);const select=el("select",undefined,statusLabel);for(const [v,t] of [["pendente","Pendente"],["pago","Pago"],["parceria","Parceria · troca de serviços"]]){const opt=el("option",t,select);opt.value=v}select.value=p?.status||"pendente";const dateLabel=el("label","Data do pagamento",fields);const date=el("input",undefined,dateLabel);date.type="date";date.value=p?.pago_em||"";const button=el("button","Salvar registro",fields);const info=el("p","",card,"status");button.onclick=async()=>{const raw=value.value.trim();if((raw===""&&select.value!=="parceria")||(raw!==""&&(!Number.isFinite(Number(raw))||Number(raw)<0))){info.className="status error";info.textContent="Informe um valor válido antes de salvar.";return}if(select.value==="pago"&&!date.value){info.className="status error";info.textContent="Informe a data em que recebeu o pagamento.";return}button.disabled=true;info.textContent="Salvando...";try{const row={owner_id:owner,appointment_id:String(a.id),valor:raw===""?null:Number(raw),status:select.value,pago_em:select.value==="pago"?date.value:null,atualizado_em:new Date().toISOString()};await api("pagamentos_studio?on_conflict=owner_id,appointment_id",{method:"POST",headers:{"Prefer":"resolution=merge-duplicates,return=representation"},body:JSON.stringify(row)});const i=payments.findIndex(p=>String(p.appointment_id)===String(a.id));if(i<0)payments.push(row);else payments[i]=row;render();statusEl.className="success";statusEl.textContent="Registro salvo com sucesso."}catch(e){info.className="status error";info.textContent=e.message||"Erro ao salvar.";button.disabled=false}};select.onchange=()=>{if(select.value==="pago"&&!date.value)date.value=isoToday();if(select.value!=="pago")date.value=""}}}
-const now=new Date();month.value=now.getFullYear()+"-"+String(now.getMonth()+1).padStart(2,"0");month.onchange=render;document.getElementById("refresh").onclick=load;load();
+const refresh=document.getElementById("refresh");
+async function load(){refresh.disabled=itemsEl.inert=true;statusEl.className="";statusEl.textContent="Carregando dados...";try{const s=session();if(!s?.user?.id)throw Error("Entre primeiro na agenda principal.");owner=s.user.id;const [a,p]=await Promise.all([api("agenda_studio?owner_id=eq."+encodeURIComponent(owner)+"&select=data"),api("pagamentos_studio?owner_id=eq."+encodeURIComponent(owner)+"&select=appointment_id,valor,status,pago_em&limit=10000")]);if(!a.length)throw Error("Agenda não encontrada.");let data=a[0].data||{};if(typeof data==="string")data=JSON.parse(data);appointments=Array.isArray(data.appointments)?data.appointments:[];clients=Array.isArray(data.clients)?data.clients:[];payments=p||[];statusEl.textContent="";render()}catch(e){statusEl.className="error";statusEl.textContent=e.message||"Erro ao carregar.";itemsEl.replaceChildren();summary.replaceChildren()}finally{refresh.disabled=itemsEl.inert=false}}
+const editor = document.getElementById("editor");
+const editorTitle = document.getElementById("editor-title");
+const editorAppointment = document.getElementById("editor-appointment");
+const editorStatus = document.getElementById("editor-status");
+const form = document.getElementById("payment-form");
+const value = document.getElementById("value");
+const select = document.getElementById("payment-status");
+const date = document.getElementById("payment-date");
+const dateLabel = document.getElementById("payment-date-label");
+const save = document.getElementById("save-payment");
+const cancel = document.getElementById("cancel-edit");
+const paymentLabels = { pendente: "Pendente", pago: "Pago", parceria: "Parceria" };
+let editingId = null;
+
+function render(focusId = null) {
+  itemsEl.replaceChildren();
+  summary.replaceChildren();
+  const selectedMonth = month.value;
+  const paymentById = new Map(payments.map(payment => [String(payment.appointment_id), payment]));
+  const completed = appointments.filter(appointment => appointment.status === "Realizado");
+  const monthly = completed.filter(appointment => String(appointment.date || "").slice(0, 7) === selectedMonth);
+  const recorded = monthly.map(appointment => paymentById.get(String(appointment.id)))
+    .filter(payment => payment && payment.status !== "parceria" && payment.valor != null);
+  const partnerships = monthly.filter(appointment => paymentById.get(String(appointment.id))?.status === "parceria").length;
+  const billed = recorded.reduce((total, payment) => total + Number(payment.valor), 0);
+  const pending = recorded.filter(payment => payment.status !== "pago")
+    .reduce((total, payment) => total + Number(payment.valor), 0);
+  const received = completed.map(appointment => paymentById.get(String(appointment.id)))
+    .filter(payment => payment?.status === "pago" && String(payment.pago_em || "").slice(0, 7) === selectedMonth)
+    .reduce((total, payment) => total + Number(payment.valor || 0), 0);
+  metric("Valor registrado em atendimentos realizados", money(billed));
+  metric("Recebido no mês", money(received));
+  metric("Pendente dos atendimentos do mês", money(pending));
+  metric("Parcerias realizadas", String(partnerships));
+  metric("Atendimentos sem valor informado", String(monthly.length - recorded.length - partnerships));
+
+  const rows = appointments.filter(appointment =>
+    String(appointment.date || "").slice(0, 7) === selectedMonth && appointment.status !== "Cancelado"
+  ).sort((a, b) => String(a.date).localeCompare(String(b.date)) ||
+    String(a.time || "").localeCompare(String(b.time || "")));
+  if (!rows.length) {
+    el("p", "Nenhum atendimento encontrado para este mês.", itemsEl);
+    return;
+  }
+
+  const clientById = new Map(clients.map(client => [String(client.id), client]));
+  const list = el("ul", undefined, itemsEl, "entries");
+  for (const appointment of rows) {
+    const id = String(appointment.id);
+    const payment = paymentById.get(id);
+    const clientName = clientById.get(String(appointment.clientId))?.name || "Cliente não identificada";
+    const technique = appointment.technique || "Técnica não informada";
+    const appointmentDate = [dateBR(appointment.date), appointment.time].filter(Boolean).join(" às ");
+    const entry = el("li", undefined, list, "item");
+    const details = el("div", undefined, entry, "entry-details");
+    el("h3", clientName, details);
+    el("p", [appointmentDate, technique, appointment.status].filter(Boolean).join(" · "), details, "muted");
+    const paymentDetails = el("div", undefined, entry, "entry-payment");
+    if (payment?.valor != null) el("strong", money(payment.valor), paymentDetails);
+    const paymentStatus = payment ? paymentLabels[payment.status] || "Pendente" : "Sem lançamento";
+    const paidDate = payment?.status === "pago" && payment.pago_em ? " · " + dateBR(payment.pago_em) : "";
+    el("p", paymentStatus + paidDate, paymentDetails, "muted");
+    const action = el("button", payment ? "Editar" : "Registrar", entry);
+    action.type = "button";
+    action.setAttribute("aria-label", action.textContent + " lançamento de " + clientName + ", " + appointmentDate);
+    action.onclick = () => openEditor(id, clientName + " · " + appointmentDate + " · " + technique, payment);
+    if (id === focusId) action.focus();
+  }
+}
+
+function syncPaymentFields() {
+  const paid = select.value === "pago";
+  dateLabel.hidden = !paid;
+  date.required = paid;
+  value.required = select.value !== "parceria";
+}
+
+function openEditor(id, description, payment) {
+  editingId = id;
+  editorTitle.textContent = payment ? "Editar lançamento" : "Registrar pagamento";
+  editorAppointment.textContent = description;
+  value.value = payment?.valor == null ? "" : String(payment.valor);
+  select.value = payment?.status || "pendente";
+  date.value = payment?.pago_em || "";
+  editorStatus.className = "";
+  editorStatus.textContent = "";
+  syncPaymentFields();
+  editor.showModal();
+}
+
+select.onchange = () => {
+  if (select.value === "pago" && !date.value) date.value = isoToday();
+  syncPaymentFields();
+};
+cancel.onclick = () => editor.close();
+editor.addEventListener("cancel", event => {
+  if (save.disabled) event.preventDefault();
+});
+form.onsubmit = async event => {
+  event.preventDefault();
+  if (save.disabled || editingId === null) return;
+  const id = editingId;
+  const row = {
+    owner_id: owner,
+    appointment_id: id,
+    valor: value.value === "" ? null : value.valueAsNumber,
+    status: select.value,
+    pago_em: select.value === "pago" ? date.value : null,
+    atualizado_em: new Date().toISOString()
+  };
+  save.disabled = cancel.disabled = value.disabled = select.disabled = date.disabled = true;
+  editorStatus.className = "";
+  editorStatus.textContent = "Salvando...";
+  try {
+    const [saved] = await api("pagamentos_studio?on_conflict=owner_id,appointment_id", {
+      method: "POST",
+      headers: { Prefer: "resolution=merge-duplicates,return=representation" },
+      body: JSON.stringify(row)
+    });
+    if (!saved) throw Error("O banco não retornou o registro salvo. Atualize a lista e confira o lançamento.");
+    const index = payments.findIndex(payment => String(payment.appointment_id) === id);
+    if (index < 0) payments.push(saved);
+    else payments[index] = saved;
+    editor.close();
+    render(id);
+    statusEl.className = "success";
+    statusEl.textContent = "Registro salvo com sucesso.";
+  } catch (error) {
+    editorStatus.className = "error";
+    editorStatus.textContent = error.message || "Erro ao salvar.";
+  } finally {
+    save.disabled = cancel.disabled = value.disabled = select.disabled = date.disabled = false;
+  }
+};
+const now=new Date();month.value=now.getFullYear()+"-"+String(now.getMonth()+1).padStart(2,"0");month.onchange=()=>render();refresh.onclick=load;load();
 </script></body></html>
