@@ -5,6 +5,9 @@
 .item h3,.item p{margin:0}
 .item h3{font-size:16px}
 .item p{font-size:14px}
+.entry-form{grid-column:1/-1;width:100%;max-width:430px}
+.item:has(.entry-form) .entry-details{grid-column:1/-1}
+.form-status:empty{display:none}
 .entry-payment strong{display:block}
 .item button{justify-self:start}
 dialog{width:min(92%,420px);max-height:90vh;padding:22px;border:1px solid #eadbd5;border-radius:13px;background:#fff;color:#49352f}
@@ -20,25 +23,26 @@ dialog h2{margin:0 0 8px}
 <dialog id="editor" aria-labelledby="editor-title">
   <h2 id="editor-title">Editar lançamento</h2>
   <p id="editor-appointment" class="muted"></p>
-  <form id="payment-form">
+</dialog>
+<template id="payment-form">
+  <form>
     <div class="fields">
-      <label>Valor cobrado (R$)<input id="value" type="number" min="0" max="99999.99" step="0.01" inputmode="decimal" autofocus></label>
+      <label>Valor cobrado (R$)<input name="valor" type="number" min="0" max="99999.99" step="0.01" inputmode="decimal"></label>
       <label>Pagamento
-        <select id="payment-status">
+        <select name="status">
           <option value="pendente">Pendente</option>
           <option value="pago">Pago</option>
           <option value="parceria">Parceria · troca de serviços</option>
         </select>
       </label>
-      <label id="payment-date-label">Data do pagamento<input id="payment-date" type="date"></label>
+      <label hidden>Data do pagamento<input name="pago_em" type="date"></label>
     </div>
-    <p id="editor-status" role="status"></p>
+    <p class="form-status" role="status"></p>
     <div class="dialog-actions">
-      <button type="submit" id="save-payment">Salvar registro</button>
-      <button type="button" id="cancel-edit" class="secondary">Cancelar</button>
+      <button type="submit">Salvar registro</button>
     </div>
   </form>
-</dialog>
+</template>
 <script src="./config.js"></script><script>
 "use strict";
 const cfg=window.AS_AGENDA_CONFIG,month=document.getElementById("month"),statusEl=document.getElementById("status"),itemsEl=document.getElementById("items"),summary=document.getElementById("summary");let appointments=[],clients=[],payments=[],owner="";
@@ -50,24 +54,14 @@ function metric(label,value){const card=el("div",undefined,summary,"metric");el(
 const refresh=document.getElementById("refresh");
 async function load(){refresh.disabled=itemsEl.inert=true;statusEl.className="";statusEl.textContent="Carregando dados...";try{const s=session();if(!s?.user?.id)throw Error("Entre primeiro na agenda principal.");owner=s.user.id;const [a,p]=await Promise.all([api("agenda_studio?owner_id=eq."+encodeURIComponent(owner)+"&select=data"),api("pagamentos_studio?owner_id=eq."+encodeURIComponent(owner)+"&select=appointment_id,valor,status,pago_em&limit=10000")]);if(!a.length)throw Error("Agenda não encontrada.");let data=a[0].data||{};if(typeof data==="string")data=JSON.parse(data);appointments=Array.isArray(data.appointments)?data.appointments:[];clients=Array.isArray(data.clients)?data.clients:[];payments=p||[];statusEl.textContent="";render()}catch(e){statusEl.className="error";statusEl.textContent=e.message||"Erro ao carregar.";itemsEl.replaceChildren();summary.replaceChildren()}finally{refresh.disabled=itemsEl.inert=false}}
 const editor = document.getElementById("editor");
-const editorTitle = document.getElementById("editor-title");
 const editorAppointment = document.getElementById("editor-appointment");
-const editorStatus = document.getElementById("editor-status");
-const form = document.getElementById("payment-form");
-const value = document.getElementById("value");
-const select = document.getElementById("payment-status");
-const date = document.getElementById("payment-date");
-const dateLabel = document.getElementById("payment-date-label");
-const save = document.getElementById("save-payment");
-const cancel = document.getElementById("cancel-edit");
+const formTemplate = document.getElementById("payment-form");
 const paymentLabels = { pendente: "Pendente", pago: "Pago", parceria: "Parceria" };
-let editingId = null;
+let savesInProgress = 0;
 
-function render(focusId = null) {
-  itemsEl.replaceChildren();
+function renderSummary(paymentById) {
   summary.replaceChildren();
   const selectedMonth = month.value;
-  const paymentById = new Map(payments.map(payment => [String(payment.appointment_id), payment]));
   const completed = appointments.filter(appointment => appointment.status === "Realizado");
   const monthly = completed.filter(appointment => String(appointment.date || "").slice(0, 7) === selectedMonth);
   const recorded = monthly.map(appointment => paymentById.get(String(appointment.id)))
@@ -84,6 +78,13 @@ function render(focusId = null) {
   metric("Pendente dos atendimentos do mês", money(pending));
   metric("Parcerias realizadas", String(partnerships));
   metric("Atendimentos sem valor informado", String(monthly.length - recorded.length - partnerships));
+}
+
+function render() {
+  itemsEl.replaceChildren();
+  const selectedMonth = month.value;
+  const paymentById = new Map(payments.map(payment => [String(payment.appointment_id), payment]));
+  renderSummary(paymentById);
 
   const rows = appointments.filter(appointment =>
     String(appointment.date || "").slice(0, 7) === selectedMonth && appointment.status !== "Cancelado"
@@ -102,86 +103,125 @@ function render(focusId = null) {
     const clientName = clientById.get(String(appointment.clientId))?.name || "Cliente não identificada";
     const technique = appointment.technique || "Técnica não informada";
     const appointmentDate = [dateBR(appointment.date), appointment.time].filter(Boolean).join(" às ");
-    const entry = el("li", undefined, list, "item");
-    const details = el("div", undefined, entry, "entry-details");
-    el("h3", clientName, details);
-    el("p", [appointmentDate, technique, appointment.status].filter(Boolean).join(" · "), details, "muted");
-    const paymentDetails = el("div", undefined, entry, "entry-payment");
-    if (payment?.valor != null) el("strong", money(payment.valor), paymentDetails);
-    const paymentStatus = payment ? paymentLabels[payment.status] || "Pendente" : "Sem lançamento";
-    const paidDate = payment?.status === "pago" && payment.pago_em ? " · " + dateBR(payment.pago_em) : "";
-    el("p", paymentStatus + paidDate, paymentDetails, "muted");
-    const action = el("button", payment ? "Editar" : "Registrar", entry);
-    action.type = "button";
-    action.setAttribute("aria-label", action.textContent + " lançamento de " + clientName + ", " + appointmentDate);
-    action.onclick = () => openEditor(id, clientName + " · " + appointmentDate + " · " + technique, payment);
-    if (id === focusId) action.focus();
+    list.append(createEntry(appointment, clientName, technique, appointmentDate, payment));
   }
 }
 
-function syncPaymentFields() {
-  const paid = select.value === "pago";
-  dateLabel.hidden = !paid;
-  date.required = paid;
-  value.required = select.value !== "parceria";
+function createEntry(appointment, clientName, technique, appointmentDate, payment) {
+  const id = String(appointment.id);
+  const entry = el("li", undefined, null, "item");
+  const details = el("div", undefined, entry, "entry-details");
+  el("h3", clientName, details);
+  el("p", [appointmentDate, technique, appointment.status].filter(Boolean).join(" · "), details, "muted");
+
+  const saveEntry = saved => {
+    const updated = createEntry(appointment, clientName, technique, appointmentDate, saved);
+    entry.replaceWith(updated);
+    updated.querySelector("button").focus();
+  };
+
+  if (!payment) {
+    entry.append(createPaymentForm(id, null, saveEntry));
+    return entry;
+  }
+
+  const paymentDetails = el("div", undefined, entry, "entry-payment");
+  if (payment.valor != null) el("strong", money(payment.valor), paymentDetails);
+  const paymentStatus = paymentLabels[payment.status] || "Pendente";
+  const paidDate = payment.status === "pago" && payment.pago_em ? " · " + dateBR(payment.pago_em) : "";
+  el("p", paymentStatus + paidDate, paymentDetails, "muted");
+  const action = el("button", "Editar", entry);
+  action.type = "button";
+  action.setAttribute("aria-label", "Editar lançamento de " + clientName + ", " + appointmentDate);
+  action.onclick = () => {
+    editor.querySelector("form")?.remove();
+    editorAppointment.textContent = clientName + " · " + appointmentDate + " · " + technique;
+    const form = createPaymentForm(id, payment, saved => {
+      editor.close();
+      saveEntry(saved);
+    });
+    const cancel = el("button", "Cancelar", form.querySelector(".dialog-actions"), "secondary");
+    cancel.type = "button";
+    cancel.onclick = () => editor.close();
+    editor.append(form);
+    editor.showModal();
+    form.elements.valor.focus();
+  };
+  return entry;
 }
 
-function openEditor(id, description, payment) {
-  editingId = id;
-  editorTitle.textContent = payment ? "Editar lançamento" : "Registrar pagamento";
-  editorAppointment.textContent = description;
-  value.value = payment?.valor == null ? "" : String(payment.valor);
+editor.addEventListener("close", () => {
+  if (!editor.open) editor.querySelector("form")?.remove();
+});
+editor.addEventListener("cancel", event => {
+  if (editor.querySelector("button[type=submit]:disabled")) event.preventDefault();
+});
+
+function createPaymentForm(id, payment, onSaved) {
+  const form = formTemplate.content.firstElementChild.cloneNode(true);
+  const { valor: value, status: select, pago_em: date } = form.elements;
+  const formStatus = form.querySelector(".form-status");
+  const save = form.querySelector("button[type=submit]");
+  if (!payment) form.classList.add("entry-form");
+
+  function syncFields() {
+    const paid = select.value === "pago";
+    date.closest("label").hidden = !paid;
+    date.required = paid;
+    value.required = select.value !== "parceria";
+  }
+
+  value.value = payment?.valor ?? "";
   select.value = payment?.status || "pendente";
   date.value = payment?.pago_em || "";
-  editorStatus.className = "";
-  editorStatus.textContent = "";
-  syncPaymentFields();
-  editor.showModal();
+  syncFields();
+  select.onchange = () => {
+    if (select.value === "pago" && !date.value) date.value = isoToday();
+    syncFields();
+  };
+
+  form.onsubmit = async event => {
+    event.preventDefault();
+    if (save.disabled) return;
+    const row = {
+      owner_id: owner,
+      appointment_id: id,
+      valor: value.value === "" ? null : value.valueAsNumber,
+      status: select.value,
+      pago_em: select.value === "pago" ? date.value : null,
+      atualizado_em: new Date().toISOString()
+    };
+    savesInProgress++;
+    refresh.disabled = month.disabled = true;
+    for (const field of form.elements) field.disabled = true;
+    formStatus.className = "form-status";
+    formStatus.textContent = "Salvando...";
+    statusEl.textContent = "";
+    try {
+      const [saved] = await api("pagamentos_studio?on_conflict=owner_id,appointment_id", {
+        method: "POST",
+        headers: { Prefer: "resolution=merge-duplicates,return=representation" },
+        body: JSON.stringify(row)
+      });
+      if (!saved) throw Error("O banco não retornou o registro salvo. Atualize a lista e confira o lançamento.");
+      const index = payments.findIndex(payment => String(payment.appointment_id) === id);
+      if (index < 0) payments.push(saved);
+      else payments[index] = saved;
+      onSaved(saved);
+      renderSummary(new Map(payments.map(payment => [String(payment.appointment_id), payment])));
+      statusEl.className = "success";
+      statusEl.textContent = "Registro salvo com sucesso.";
+    } catch (error) {
+      formStatus.className = "form-status error";
+      formStatus.textContent = error.message || "Erro ao salvar.";
+    } finally {
+      savesInProgress--;
+      refresh.disabled = month.disabled = savesInProgress > 0;
+      for (const field of form.elements) field.disabled = false;
+    }
+  };
+  return form;
 }
 
-select.onchange = () => {
-  if (select.value === "pago" && !date.value) date.value = isoToday();
-  syncPaymentFields();
-};
-cancel.onclick = () => editor.close();
-editor.addEventListener("cancel", event => {
-  if (save.disabled) event.preventDefault();
-});
-form.onsubmit = async event => {
-  event.preventDefault();
-  if (save.disabled || editingId === null) return;
-  const id = editingId;
-  const row = {
-    owner_id: owner,
-    appointment_id: id,
-    valor: value.value === "" ? null : value.valueAsNumber,
-    status: select.value,
-    pago_em: select.value === "pago" ? date.value : null,
-    atualizado_em: new Date().toISOString()
-  };
-  save.disabled = cancel.disabled = value.disabled = select.disabled = date.disabled = true;
-  editorStatus.className = "";
-  editorStatus.textContent = "Salvando...";
-  try {
-    const [saved] = await api("pagamentos_studio?on_conflict=owner_id,appointment_id", {
-      method: "POST",
-      headers: { Prefer: "resolution=merge-duplicates,return=representation" },
-      body: JSON.stringify(row)
-    });
-    if (!saved) throw Error("O banco não retornou o registro salvo. Atualize a lista e confira o lançamento.");
-    const index = payments.findIndex(payment => String(payment.appointment_id) === id);
-    if (index < 0) payments.push(saved);
-    else payments[index] = saved;
-    editor.close();
-    render(id);
-    statusEl.className = "success";
-    statusEl.textContent = "Registro salvo com sucesso.";
-  } catch (error) {
-    editorStatus.className = "error";
-    editorStatus.textContent = error.message || "Erro ao salvar.";
-  } finally {
-    save.disabled = cancel.disabled = value.disabled = select.disabled = date.disabled = false;
-  }
-};
 const now=new Date();month.value=now.getFullYear()+"-"+String(now.getMonth()+1).padStart(2,"0");month.onchange=()=>render();refresh.onclick=load;load();
 </script></body></html>
