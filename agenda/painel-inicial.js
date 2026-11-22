@@ -2,8 +2,46 @@
 const panel=document.createElement("section");panel.id="as-home";panel.setAttribute("aria-label","Resumo inteligente do estúdio");
 panel.innerHTML='<div class="head"><div><p class="caption">ANIELE SCARPI · LASH DESIGNER</p><h2>Meu estúdio hoje</h2></div><button type="button" id="as-home-refresh">↻ Atualizar</button></div><div class="grid" id="as-home-grid"></div><p id="as-home-status" role="status">Aguardando login na agenda…</p><div class="actions"><button type="button" id="as-home-new-client">＋ Nova cliente</button><button type="button" id="as-home-new-appointment">＋ Novo atendimento</button><button type="button" id="as-home-slots">◷ Horários livres</button><a href="./solicitacoes.html">Solicitações online</a></div>';
 const grid=panel.querySelector("#as-home-grid"),status=panel.querySelector("#as-home-status");let lastLoad=0,busy=false,refreshRequested=false;
-const cards=[["Atendimentos de hoje","Agendados para hoje"],["Próximas manutenções","Vencidas ou até 7 dias"],["Clientes aguardando contato","Realizados há 1–30 dias"],["Solicitações pendentes","Aguardando aprovação"]];
-function show(values){grid.replaceChildren();cards.forEach(([title,note],i)=>{const c=document.createElement("div");c.className="tile";if(i===3&&Number(values?.[i])>0){c.classList.add("as-pending-alert");c.style.border="2px solid #c9957f";c.style.background="#fff3ed";c.style.cursor="pointer";c.title="Abrir solicitações pendentes";c.setAttribute("role","link");c.tabIndex=0;c.onclick=()=>location.href="./solicitacoes.html";c.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();location.href="./solicitacoes.html"}}}const label=document.createElement("span");label.textContent=title;const number=document.createElement("strong");number.textContent=values?.[i]??"—";const sub=document.createElement("small");sub.textContent=note;c.append(label,number,sub);grid.append(c)})}
+function openToday(){
+  document.querySelector(".content .this-week").click();
+  const client=document.querySelector('.content select[aria-label="Filtrar por cliente"]');
+  if(client?.value){
+    client.value="";
+    client.dispatchEvent(new Event("change",{bubbles:true}));
+  }
+  requestAnimationFrame(()=>{
+    const section=document.querySelector(".content .schedule");
+    const target=document.getElementById("day-"+dayKey(new Date()))||section;
+    if(!target)return;
+    target.tabIndex=-1;
+    target.focus({preventScroll:true});
+    target.scrollIntoView({block:"start",behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"instant":"smooth"});
+  });
+}
+const cards=[
+  {title:"Atendimentos de hoje",note:"Agendados para hoje",open:openToday},
+  {title:"Próximas manutenções",note:"Vencidas ou até 7 dias",open:()=>window.AS_openManutencoes()},
+  {title:"Clientes aguardando contato",note:"Realizados há 1–30 dias",open:()=>window.AS_openPosAtendimento()},
+  {title:"Solicitações pendentes",note:"Aguardando aprovação",href:"./solicitacoes.html"}
+];
+function show(values){
+  cards.forEach(({title,note,open,href},i)=>{
+    let card=grid.children[i];
+    if(!card){
+      card=document.createElement(href?"a":"button");
+      card.className="tile";
+      if(href)card.href=href;
+      else{card.type="button";card.onclick=open}
+      const label=document.createElement("span"),sub=document.createElement("small");
+      label.textContent=title;
+      sub.textContent=note;
+      card.append(label,document.createElement("strong"),sub);
+      grid.append(card);
+    }
+    card.querySelector("strong").textContent=values?.[i]??"—";
+    card.classList.toggle("as-pending-alert",Boolean(href&&Number(values?.[i])>0));
+  });
+}
 function date(s){const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(String(s||""));return m?new Date(+m[1],+m[2]-1,+m[3],12):null}
 function dayKey(d){return [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-")}
 function difference(a,b){return Math.round((a-b)/86400000)}
