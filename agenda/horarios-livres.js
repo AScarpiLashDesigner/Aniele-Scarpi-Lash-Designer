@@ -10,7 +10,11 @@
     <p id="as-free-status" role="status" aria-live="polite"></p>
     <div class="as-free-layout"><div><h3>1. Escolha os horários</h3><div class="as-free-actions"><button type="button" id="as-free-all">Selecionar todos</button><button type="button" id="as-free-clear">Limpar seleção</button></div><p class="as-free-note">Cada horário é uma opção de início. As vagas podem se sobrepor; a reserva é confirmada pela agenda.</p><div id="as-free-results"></div></div>
     <div><h3>2. Personalize sua imagem</h3><div class="as-free-fields"><label>Formato<select id="as-free-format"><option value="story">Story · 1080 × 1920</option><option value="feed">Feed · 1080 × 1350</option></select></label><label>Título<input id="as-free-heading" value="Horários disponíveis" maxlength="28"></label><label>Frase manuscrita<input id="as-free-call" value="da semana" maxlength="44"></label><label>Cor de destaque<input id="as-free-color" type="color" value="#a75f47"></label></div>
-    <div id="as-free-preview" aria-label="Prévia da arte"></div><p class="as-free-note" id="as-free-count"></p><div class="as-free-actions"><button type="button" id="as-free-png" disabled>Salvar e baixar PNG</button><button type="button" id="as-free-svg" disabled>Baixar SVG editável</button></div><p class="as-free-note">Os horários são conferidos novamente antes do download. Baixe a imagem e publique no Instagram; acrescente seu link de agendamento no Story.</p></div></div></section>`;
+    <div id="as-free-preview" aria-label="Prévia da arte"></div><p class="as-free-note" id="as-free-count"></p><div class="as-free-actions"><button type="button" id="as-free-png" disabled>Salvar e baixar PNG</button><button type="button" id="as-free-svg" disabled>Baixar SVG editável</button></div><p class="as-free-note">Os horários são conferidos novamente antes do download. Baixe a imagem e publique no Instagram; acrescente seu link de agendamento no Story.</p>
+    <section id="as-free-saved-preview" aria-labelledby="as-free-saved-title" hidden>
+      <h3 id="as-free-saved-title">Última imagem salva</h3>
+      <img id="as-free-saved-image" alt="Arte salva com os horários escolhidos para divulgação">
+    </section></div></div></section>`;
   document.body.append(overlay);
   const $ = id => overlay.querySelector('#as-free-' + id);
   const status = $('status'), results = $('results'), input = $('start');
@@ -54,6 +58,12 @@
     $('saved-note').textContent = savedArt
       ? 'Disponível neste navegador até ' + label(savedArt.lastDay) + '. A imagem mantém os horários da versão salva. Confira a agenda antes de republicar.'
       : '';
+    const image = $('saved-image');
+    const previousUrl = image.getAttribute('src');
+    if (previousUrl) URL.revokeObjectURL(previousUrl);
+    $('saved-preview').hidden = !savedArt;
+    if (savedArt) image.src = URL.createObjectURL(savedArt.blob);
+    else image.removeAttribute('src');
   }
   const iso = d => new Intl.DateTimeFormat('en-CA', {timeZone:'America/Sao_Paulo',year:'numeric',month:'2-digit',day:'2-digit'}).format(d);
   function shift(s,n) {const d=new Date(s+'T12:00:00Z'); d.setUTCDate(d.getUTCDate()+n); return d.toISOString().slice(0,10);}
