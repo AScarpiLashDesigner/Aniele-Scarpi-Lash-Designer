@@ -6,14 +6,55 @@
     <div class="as-free-top"><div><p class="as-free-eyebrow">ANIELE SCARPI · DIVULGAÇÃO</p><h2 id="as-free-title">Sua agenda no Instagram</h2></div><button type="button" id="as-free-close" aria-label="Fechar">✕</button></div>
     <p class="as-free-note">Selecione as vagas que quer divulgar. Inícios a cada 30 minutos. Atendimentos de 2 horas, a partir das 08h, com último início às 20h e almoço das 12h às 13h.</p>
     <div class="as-free-toolbar"><label>Semana a partir de<input id="as-free-start" type="date" required></label><button type="button" id="as-free-reload">Atualizar horários</button></div>
+    <div id="as-free-saved" class="as-free-actions" hidden><button type="button" id="as-free-saved-png">Baixar arte salva</button><button type="button" id="as-free-edit-saved">Editar arte salva</button><span class="as-free-note" id="as-free-saved-note"></span></div>
     <p id="as-free-status" role="status" aria-live="polite"></p>
     <div class="as-free-layout"><div><h3>1. Escolha os horários</h3><div class="as-free-actions"><button type="button" id="as-free-all">Selecionar todos</button><button type="button" id="as-free-clear">Limpar seleção</button></div><p class="as-free-note">Cada horário é uma opção de início. As vagas podem se sobrepor; a reserva é confirmada pela agenda.</p><div id="as-free-results"></div></div>
     <div><h3>2. Personalize sua imagem</h3><div class="as-free-fields"><label>Formato<select id="as-free-format"><option value="story">Story · 1080 × 1920</option><option value="feed">Feed · 1080 × 1350</option></select></label><label>Título<input id="as-free-heading" value="Horários disponíveis" maxlength="28"></label><label>Frase manuscrita<input id="as-free-call" value="da semana" maxlength="44"></label><label>Cor de destaque<input id="as-free-color" type="color" value="#a75f47"></label></div>
-    <div id="as-free-preview" aria-label="Prévia da arte"></div><p class="as-free-note" id="as-free-count"></p><div class="as-free-actions"><button type="button" id="as-free-png" disabled>Baixar imagem PNG</button><button type="button" id="as-free-svg" disabled>Baixar SVG editável</button></div><p class="as-free-note">Os horários são conferidos novamente antes do download. Baixe a imagem e publique no Instagram; acrescente seu link de agendamento no Story.</p></div></div></section>`;
+    <div id="as-free-preview" aria-label="Prévia da arte"></div><p class="as-free-note" id="as-free-count"></p><div class="as-free-actions"><button type="button" id="as-free-png" disabled>Salvar e baixar PNG</button><button type="button" id="as-free-svg" disabled>Baixar SVG editável</button></div><p class="as-free-note">Os horários são conferidos novamente antes do download. Baixe a imagem e publique no Instagram; acrescente seu link de agendamento no Story.</p></div></div></section>`;
   document.body.append(overlay);
   const $ = id => overlay.querySelector('#as-free-' + id);
   const status = $('status'), results = $('results'), input = $('start');
   let days = [], selected = new Set(), logo = '', background = '', designPromise, loaded = false, pending = false, revision = 0, opener;
+  let savedArt, storagePromise;
+  const session = () => JSON.parse(sessionStorage.getItem('as-agenda-session-v1') || 'null');
+  function openArtStorage() {
+    if (!storagePromise) {
+      storagePromise = new Promise((resolve, reject) => {
+        const request = indexedDB.open('as-agenda-divulgacao', 1);
+        request.onupgradeneeded = () => request.result.createObjectStore('artes');
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+      }).catch(error => {storagePromise = undefined; throw error;});
+    }
+    return storagePromise;
+  }
+  async function artStorage(owner, art) {
+    const db = await openArtStorage();
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction('artes', 'readwrite');
+      const store = transaction.objectStore('artes');
+      let result = art;
+      if (art) store.put(art, owner);
+      else {
+        const request = store.get(owner);
+        request.onsuccess = () => {
+          const stored = request.result;
+          if (!stored) return;
+          if (stored.lastDay < iso(new Date())) store.delete(owner);
+          else result = stored;
+        };
+      }
+      transaction.oncomplete = () => resolve(result);
+      transaction.onabort = () => reject(transaction.error);
+    });
+  }
+  function showSavedArt() {
+    $('saved').hidden = !savedArt;
+    $('saved').style.display = savedArt ? '' : 'none';
+    $('saved-note').textContent = savedArt
+      ? 'Disponível neste navegador até ' + label(savedArt.lastDay) + '. A imagem mantém os horários da versão salva. Confira a agenda antes de republicar.'
+      : '';
+  }
   const iso = d => new Intl.DateTimeFormat('en-CA', {timeZone:'America/Sao_Paulo',year:'numeric',month:'2-digit',day:'2-digit'}).format(d);
   function shift(s,n) {const d=new Date(s+'T12:00:00Z'); d.setUTCDate(d.getUTCDate()+n); return d.toISOString().slice(0,10);}
   function minutes(s) {const m=/^(\d{1,2}):(\d{2})/.exec(String(s||'')); return m?Number(m[1])*60+Number(m[2]):NaN;}
@@ -33,7 +74,7 @@
     return free;
   }
   async function query(first) {
-    const s=JSON.parse(sessionStorage.getItem('as-agenda-session-v1')||'null'), cfg=window.AS_AGENDA_CONFIG;
+    const s=session(), cfg=window.AS_AGENDA_CONFIG;
     if(!s?.user?.id||!s?.access_token||!cfg?.url||!cfg?.key)throw Error('Entre na agenda para consultar os horários.');
     const [resp,publicResponse]=await Promise.all([
       fetch(cfg.url+'/rest/v1/agenda_studio?owner_id=eq.'+encodeURIComponent(s.user.id)+'&select=data',{headers:{apikey:cfg.key,Authorization:'Bearer '+s.access_token},cache:'no-store',signal:AbortSignal.timeout(20000)}),
@@ -146,25 +187,32 @@
     $('png').disabled=$('svg').disabled=!loaded||pending||!count;
   }
   function controls(disabled) {
-    for(const id of ['start','reload','all','clear','format','heading','call','color'])$(id).disabled=disabled;
+    for(const id of ['start','reload','all','clear','format','heading','call','color','edit-saved'])$(id).disabled=disabled;
     for(const box of results.querySelectorAll('input'))box.disabled=disabled;
   }
-  async function load() {
+  async function load({ restoredSelection } = {}) {
     if(pending)return;
     if(!input.value){status.textContent='Escolha a data inicial.';return;}
     const first=input.value,version=++revision;
+    const selection = new Set(restoredSelection ?? (days[0]?.date === first ? selected : []));
     pending=true;loaded=false;selected.clear();days=[];renderDays();controls(true);preview();status.textContent='Consultando agenda e solicitações pendentes…';
     try {
       const [fresh]=await Promise.all([query(first),loadLogo(),loadDesign()]);
       if(version!==revision)return;
-      days=fresh;loaded=true;renderDays();
-      const total=days.reduce((n,d)=>n+d.times.length,0);status.textContent=total+' opções de início disponíveis. Selecione as que deseja divulgar.';
+      days=fresh;
+      const valid = new Set(fresh.flatMap(day => day.times.map(time => key(day.date, time))));
+      selected = new Set([...selection].filter(slot => valid.has(slot)));
+      loaded=true;renderDays();
+      const total=days.reduce((n,d)=>n+d.times.length,0);status.textContent = restoredSelection
+        ? (selection.size - selected.size ? 'Os horários que passaram ou ficaram indisponíveis foram retirados da seleção. ' : '') +
+          'Marque ou desmarque horários e clique em Salvar e baixar PNG para atualizar a arte salva.'
+        : total+' opções de início disponíveis. Selecione as que deseja divulgar.';
     }catch(e){status.textContent=e.message||'Erro ao carregar horários.';}
     finally{pending=false;controls(false);preview();}
   }
-  function saveBlob(blob,extension) {
+  function saveBlob(blob,extension,first=input.value,format=$('format').value) {
     const url=URL.createObjectURL(blob),a=document.createElement('a');
-    a.href=url;a.download='horarios-aniele-'+input.value+'-'+$('format').value+'.'+extension;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);
+    a.href=url;a.download='horarios-aniele-'+first+'-'+format+'.'+extension;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);
   }
   async function exportImage(type) {
     if(pending||!loaded||!selected.size)return;
@@ -174,6 +222,7 @@
       const removed=[...selected].filter(k=>!valid.has(k));days=fresh;
       if(removed.length){removed.forEach(k=>selected.delete(k));renderDays();status.textContent='A agenda mudou: '+removed.length+' horário(s) removido(s). Confira a prévia e clique em baixar novamente.';return;}
       if(!chosen().length)throw Error('Selecione pelo menos um horário disponível.');
+      let storageMessage = '';
       const svg=artwork(type!=='svg');
       if(type==='svg')saveBlob(new Blob([svg],{type:'image/svg+xml;charset=utf-8'}),'svg');
       else {
@@ -182,15 +231,83 @@
           const img=new Image();await new Promise((resolve,reject)=>{img.onload=resolve;img.onerror=()=>reject(Error('Não foi possível gerar a imagem. Tente baixar o SVG.'));img.src=url;});
           const canvas=document.createElement('canvas');canvas.width=1080;canvas.height=$('format').value==='feed'?1350:1920;
           const ctx=canvas.getContext('2d');if(!ctx)throw Error('Seu navegador não conseguiu criar a imagem.');ctx.drawImage(img,0,0);
-          const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));if(!blob)throw Error('Não foi possível criar o PNG.');saveBlob(blob,'png');
+          const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));if(!blob)throw Error('Não foi possível criar o PNG.');
+          const owner = session()?.user?.id;
+          const rows = chosen();
+          const art = {
+            blob, first: input.value, format: $('format').value, lastDay: rows.at(-1).date,
+            slots: rows.flatMap(day => day.times.map(time => key(day.date, time))),
+            heading: $('heading').value, call: $('call').value, color: $('color').value
+          };
+          try {
+            if (!owner) throw Error('Sessão indisponível.');
+            savedArt = await artStorage(owner, art);
+            showSavedArt();
+          } catch {
+            storageMessage = ' O navegador não conseguiu guardar uma cópia na agenda.';
+          }
+          saveBlob(blob,'png');
         }finally{URL.revokeObjectURL(url);}
       }
-      status.textContent='Download preparado! Horários conferidos às '+new Date().toLocaleTimeString('pt-BR',{timeZone:'America/Sao_Paulo',hour:'2-digit',minute:'2-digit'})+'. Confira o arquivo salvo antes de postar.';
+      status.textContent='Download preparado! Horários conferidos às '+new Date().toLocaleTimeString('pt-BR',{timeZone:'America/Sao_Paulo',hour:'2-digit',minute:'2-digit'})+'. Confira o arquivo salvo antes de postar.'+storageMessage;
     }catch(e){loaded=false;status.textContent=(e.message||'Não foi possível baixar a imagem.')+' Atualize os horários para tentar novamente.';}
     finally{pending=false;controls(false);preview();}
   }
   function close(){if(pending)return;overlay.classList.remove('open');opener?.focus();}
-  window.AS_openHorariosLivres=function(){opener=document.activeElement;input.value=iso(new Date());input.min=input.value;input.max=shift(input.value,24);overlay.classList.add('open');$('dialog').focus();load();};
+  async function refreshSavedArt() {
+    let owner;
+    try {
+      owner = session()?.user?.id;
+      const art = owner ? await artStorage(owner) : undefined;
+      if (owner === session()?.user?.id) savedArt = art;
+    } catch {
+      savedArt = undefined;
+    }
+    showSavedArt();
+  }
+  window.AS_openHorariosLivres=function(){
+    opener=document.activeElement;input.value=iso(new Date());input.min=input.value;input.max=shift(input.value,24);
+    savedArt=undefined;showSavedArt();
+    overlay.classList.add('open');$('dialog').focus();load();refreshSavedArt();
+  };
+  $('saved-png').onclick=async()=>{
+    await refreshSavedArt();
+    if (savedArt) saveBlob(savedArt.blob, 'png', savedArt.first, savedArt.format);
+    else status.textContent = 'A arte salva não está mais disponível.';
+  };
+  $('edit-saved').onclick=async()=>{
+    if (pending) return;
+    await refreshSavedArt();
+    if (pending) return;
+    if (!savedArt) {
+      status.textContent = 'A arte salva não está mais disponível.';
+      return;
+    }
+    const today = iso(new Date());
+    input.min = today;
+    input.max = shift(today, 24);
+    input.value = savedArt.first < today ? today : savedArt.first;
+    for (const field of ['format','heading','call','color']) {
+      if (typeof savedArt[field] === 'string') $(field).value = savedArt[field];
+    }
+    await load({restoredSelection: savedArt.slots || []});
+  };
+  window.addEventListener('focus', () => {
+    if (overlay.classList.contains('open') && !pending) refreshSavedArt();
+  });
+  setInterval(() => {
+    const today = iso(new Date());
+    if (!overlay.classList.contains('open') || pending) return;
+    if (savedArt && savedArt.lastDay < today) refreshSavedArt();
+    if (input.min < today) {
+      input.min = today;
+      input.max = shift(today, 24);
+      if (input.value < today) {
+        input.value = today;
+        load();
+      }
+    }
+  }, 30000);
   $('close').onclick=close;
   overlay.addEventListener('click',e=>{if(e.target===overlay)close();});
   overlay.addEventListener('keydown',e=>{
