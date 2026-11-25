@@ -9,6 +9,16 @@ event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();
 window.location.href="./clientes.html";
 },true);
 </script><style>
+@media (min-width: 701px) {
+  .sidebar {
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+  }
+
+  .sidebar > * {
+    flex-shrink: 0;
+  }
+}
 .as-previous-appointment{padding:13px;border:1px solid #ead8d5;border-radius:12px;background:#fcf6f3;overflow-wrap:anywhere}
 .as-previous-appointment h3{margin:0 0 7px;color:#67483e;font-size:16px}
 .as-previous-appointment p{margin:5px 0;white-space:pre-wrap}
